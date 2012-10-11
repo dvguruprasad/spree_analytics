@@ -1,6 +1,6 @@
 class UserNew
     class << self
-        def order_value_frequency_distribution(ranges)
+        def monetary_distribution(ranges)
             order_value_frequency = {}
             ranges.each do |range|
                 order_value_frequency[range] = 0
@@ -12,10 +12,10 @@ class UserNew
             end
 
             order_values_by_user.each do |ov|
-                order_value_frequency.keys.each do |ovr|
+                order_value_frequency.keys.each do |ovf|
                     value = ov[:average_order_value]
-                    if value >= ovr.begin && value <= ovr.end
-                        order_value_frequency[ovr] += 1
+                    if value >= ovf.begin && value <= ovf.end
+                        order_value_frequency[ovf] += 1
                     end
                 end
             end
@@ -38,6 +38,24 @@ class UserNew
             sum = 0
             orders.each {|o| sum += o[:order_value]}
             orders.length == 0 ? 0 : sum/orders.length
+        end
+
+        def recency_distribution(recency_ranges)
+            distribution = {}
+            recency_ranges.each do |range|
+                distribution[range] = 0
+                distribution[range] += count_of_users_in_recency_range(range)
+            end
+            distribution
+        end
+
+        def count_of_users_in_recency_range(range)
+            from = Date.today - range.end
+            to = Date.today - range.begin
+            query = <<-HERE
+                select count(distinct(user_id)) as customer_count from spree_orders where created_at >= '#{from}' and created_at < '#{to}'
+            HERE
+            ActiveRecord::Base.connection.execute(query).first[0]
         end
     end
 end

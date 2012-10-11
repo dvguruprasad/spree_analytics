@@ -4,22 +4,32 @@ class RfmController < ApplicationController
     def index
     end
 
-    def order_value_to_product
-        order_value_ranges = [1..500, 501..2000 , 2001..4000, 4001..10000]
-        distribution = UserNew.order_value_frequency_distribution(order_value_ranges)
-        sorted_values = order_value_ranges.map {|range| { :range => range, :customer_count => distribution[range] }}
-        index = 0
-
-        data = sorted_values.each_with_index.map do |value,index|
-            color = colors[index]
-            products = ProductNew.products_sold_for_price_range(value[:range])
-            drilldown_data = Report.new(value[:range].to_s, products[:product_names], products[:data], color)
-            { :y => value[:customer_count] , :color => color , :drilldown => drilldown_data }
-        end
-
-
-        json_response = Report.new('Price Range', labels_for_order_value(order_value_ranges).values, data, colors[0]).to_json
+    def monetary_customer_distribution
+        monetary_ranges = [1..500, 501..2000 , 2001..4000, 4001..10000]
+        distribution = UserNew.monetary_distribution(monetary_ranges)
+        data = create_chart_data(distribution, :products_sold_for_price_range)
+        json_response = Report.new('Price Range', labels_for_order_value(monetary_ranges).values, data, colors[0]).to_json
         respond_with(json_response)
+    end
+
+    def recency_customer_distribution
+        recency_ranges_in_days = [0..7, 8..30, 31..80]
+        distribution = UserNew.recency_distribution(recency_ranges_in_days)
+        data = create_chart_data(distribution, :products_sold_in_date_range)
+        json_response = Report.new('Recency In Days', labels_for_order_value(recency_ranges_in_days).values, data, colors[0]).to_json
+        respond_with(json_response)
+    end
+
+    private
+    def create_chart_data(distribution, products_range_call)
+        index = 0
+        data = distribution.keys.map do |range|
+            color = colors[index]
+            index += 1
+            products = ProductNew.send(products_range_call, range)
+            drilldown_data = Report.new(range.to_s, products[:product_names], products[:data], color)
+            { :y => distribution[range], :color => color , :drilldown => drilldown_data }
+        end
     end
 
     def colors
