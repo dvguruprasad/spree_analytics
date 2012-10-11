@@ -20,6 +20,14 @@ class RfmController < ApplicationController
         respond_with(json_response)
     end
 
+    def frequency_customer_distribution
+        transactions_frequency_range = [1..1, 2..3, 4..5, 6..10, 10..99999]
+        distribution = UserNew.frequency_distribution(transactions_frequency_range)
+        data = create_chart_data(distribution, :products_by_transaction_frequency)
+        json_response = Report.new('Number Of Orders', labels_for_order_value(transactions_frequency_range).values, data, colors[0]).to_json
+        respond_with(json_response)
+    end
+
     private
     def create_chart_data(distribution, products_range_call)
         index = 0

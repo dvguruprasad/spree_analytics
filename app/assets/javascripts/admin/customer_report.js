@@ -1,6 +1,7 @@
 
 render_chart('monetary_customer_distribution.json', 'container_monetary', 'Monetary Customer Distribution', 'Click the columns to view Product names. Click again to view range.')
 render_chart('recency_customer_distribution.json', 'container_recency', 'Recency Customer Distribution', 'Click the columns to view Product names. Click again to view range.')
+render_chart('frequency_customer_distribution.json', 'container_frequency', 'Frequency Customer Distribution', 'Click the columns to view Product names. Click again to view range.')
 
 function render_chart(url, container, title, subtitle){
     var chart;

@@ -8,7 +8,7 @@ class UserNew
             order_values_by_user = users.map do |u| 
                 orders_of_user = orders.select {|o| o[:user_id] == u[:user_id]}
                 {:user_id => u[:user_id], :average_order_value => average(orders_of_user), 
-                                            :transactions => orders_of_user}
+                    :transactions => orders_of_user}
             end
 
             order_values_by_user.each do |ov|
@@ -22,6 +22,25 @@ class UserNew
             order_value_frequency
         end
 
+        def recency_distribution(recency_ranges)
+            distribution = {}
+            recency_ranges.each do |range|
+                distribution[range] = 0
+                distribution[range] += count_of_users_in_recency_range(range)
+            end
+            distribution
+        end
+
+        def frequency_distribution(ranges)
+            distribution = {}
+            ranges.each do |range|
+                distribution[range] = 0
+                distribution[range] += count_of_users_in_transaction_frequency_range(range)
+            end
+            distribution
+        end
+
+        private
         def users
             users = Spree::User.find(:all, :select => "id").map {|u| {:user_id => u.id }}
             num_users = 100
@@ -40,20 +59,20 @@ class UserNew
             orders.length == 0 ? 0 : sum/orders.length
         end
 
-        def recency_distribution(recency_ranges)
-            distribution = {}
-            recency_ranges.each do |range|
-                distribution[range] = 0
-                distribution[range] += count_of_users_in_recency_range(range)
-            end
-            distribution
-        end
-
         def count_of_users_in_recency_range(range)
             from = Date.today - range.end
             to = Date.today - range.begin
             query = <<-HERE
                 select count(distinct(user_id)) as customer_count from spree_orders where created_at >= '#{from}' and created_at < '#{to}'
+            HERE
+            ActiveRecord::Base.connection.execute(query).first[0]
+        end
+
+        def count_of_users_in_transaction_frequency_range(range)
+            from = Date.today - range.end
+            to = Date.today - range.begin
+            query = <<-HERE
+               select count(*) from (select count(*) customer_count from spree_orders o group by o.user_id having customer_count >= #{range.begin} and customer_count < #{range.end}) AS DERIVED
             HERE
             ActiveRecord::Base.connection.execute(query).first[0]
         end
