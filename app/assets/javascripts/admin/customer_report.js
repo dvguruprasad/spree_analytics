@@ -10,7 +10,7 @@ function render_chart(url, container, title, subtitle){
         name = response.name,
         data = response.data;
 
-    function setChart(name, categories, data, color) {
+    function setChart(name, categories, data, color, title, subtitle) {
         chart.xAxis[0].setCategories(categories, false);
         chart.series[0].remove(false);
         chart.addSeries({
@@ -18,7 +18,7 @@ function render_chart(url, container, title, subtitle){
             data: data,
             color: color || 'white'
         }, false);
-        chart.setTitle({text: 'Product Distribution'}, {text: ''})
+        chart.setTitle({text: title}, {text: subtitle})
         chart.redraw();
     }
 
@@ -49,9 +49,9 @@ function render_chart(url, container, title, subtitle){
                           click: function() {
                               var drilldown = this.drilldown;
                               if (drilldown) { // drill down
-                                  setChart(drilldown.name, drilldown.categories, drilldown.data, drilldown.color);
+                                  setChart(drilldown.name, drilldown.categories, drilldown.data, drilldown.color, 'Product Distribution', '');
                               } else { // restore
-                                  setChart(name, categories, data);
+                                  setChart(name, categories, data, null, title, subtitle);
                               }
                           }
                       }

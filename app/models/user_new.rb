@@ -5,6 +5,7 @@ class UserNew
             ranges.each do |range|
                 order_value_frequency[range] = 0
             end
+            users = all_users
             order_values_by_user = users.map do |u| 
                 orders_of_user = orders.select {|o| o[:user_id] == u[:user_id]}
                 {:user_id => u[:user_id], :average_order_value => average(orders_of_user), 
@@ -19,7 +20,7 @@ class UserNew
                     end
                 end
             end
-            order_value_frequency
+            convert_to_percentage(order_value_frequency, users.length)
         end
 
         def recency_distribution(recency_ranges)
@@ -28,7 +29,7 @@ class UserNew
                 distribution[range] = 0
                 distribution[range] += count_of_users_in_recency_range(range)
             end
-            distribution
+            convert_to_percentage(distribution, all_users.length)
         end
 
         def frequency_distribution(ranges)
@@ -37,14 +38,12 @@ class UserNew
                 distribution[range] = 0
                 distribution[range] += count_of_users_in_transaction_frequency_range(range)
             end
-            distribution
+            convert_to_percentage(distribution, all_users.length)
         end
 
         private
-        def users
-            users = Spree::User.find(:all, :select => "id").map {|u| {:user_id => u.id }}
-            num_users = 100
-            users = users[0..(num_users - 1)]
+        def all_users
+            @users ||= Spree::User.find(:all, :select => "id").map {|u| {:user_id => u.id }}
         end
 
         def orders
@@ -75,6 +74,14 @@ class UserNew
                select count(*) from (select count(*) customer_count from spree_orders o group by o.user_id having customer_count >= #{range.begin} and customer_count < #{range.end}) AS DERIVED
             HERE
             ActiveRecord::Base.connection.execute(query).first[0]
+        end
+
+        def convert_to_percentage(distribution, total)
+            distribution.keys.each do |key|
+                count = distribution[key]
+                distribution[key] = ((count / total.to_f) * 100).round(2)
+            end
+            distribution
         end
     end
 end
