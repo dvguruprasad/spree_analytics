@@ -1,5 +1,3 @@
-Spree::User.class_eval do
-    def foobar
-        p "foobar!!"
-    end
+Dir.glob(File.join(File.dirname(__FILE__), "../../app/**/*_decorator*.rb")) do |c|
+  Rails.application.config.cache_classes ? require(c) : load(c)
 end
