@@ -48,3 +48,10 @@ Spree::Product.instance_eval do
         values.map{|value|  ((value/sum.to_f) *100).round(2)  }
     end
 end
+
+
+Spree::Product.class_eval do
+    def out_of_stock?
+        count_on_hand == 0
+    end
+end
