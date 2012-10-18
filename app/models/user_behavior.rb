@@ -10,6 +10,15 @@ class UserBehavior < ActiveRecord::Base
             create_behavior('P',  "{\"product\": #{product}, \"order\": #{order_id}}", user, session_id)
         end
     end
+    def searched_and_not_available?
+        !JSON.parse(parameters)["available"]
+    end
+    def purchase?
+        action == 'P'
+    end
+    def product
+        JSON.parse(parameters)["product"]
+    end
 
     private
     def self.create_behavior(action, parameters, user, session_id)
