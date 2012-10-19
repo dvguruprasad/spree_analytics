@@ -5,11 +5,17 @@ class UserBehavior < ActiveRecord::Base
         create_behavior('S', "{\"product\": #{product.id}, \"available\": #{!product.out_of_stock?} }", user, session_id)
     end
 
+
     def self.record_purchase(order_id, product_ids, user, session_id)
         product_ids.each do |product|
             create_behavior('P',  "{\"product\": #{product}, \"order\": #{order_id}}", user, session_id)
         end
     end
+
+    def self.record_add_to_cart(variant_id, order_id, user, session_id)
+        create_behavior('A',  "{\"product\": #{variant_id}, \"order\": #{order_id}}", user, session_id)
+    end
+
     def searched_and_not_available?
         action == 'S' && !JSON.parse(parameters)["available"]
     end

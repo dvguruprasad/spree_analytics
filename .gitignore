@@ -12,3 +12,4 @@ pkg
 *.swp
 spec/dummy
 .rvmrc
+tags
