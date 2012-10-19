@@ -12,8 +12,8 @@ class UserBehavior < ActiveRecord::Base
         end
     end
 
-    def self.record_add_to_cart(variant_id, order_id, user, session_id)
-        create_behavior('A',  "{\"product\": #{variant_id}, \"order\": #{order_id}}", user, session_id)
+    def self.record_add_to_cart(product_id, order_id, user, session_id)
+        create_behavior('A',  "{\"product\": #{product_id}, \"order\": #{order_id}}", user, session_id)
     end
 
     def searched_and_not_available?
