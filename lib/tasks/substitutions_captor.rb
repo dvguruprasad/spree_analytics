@@ -15,6 +15,7 @@ class SubstitutionsCaptor
         substitutions = Hash.new(0)
         behaviors.each do |behavior|
             if behavior.searched_and_not_available?
+                stack.pop if !stack.empty?
                 stack << behavior
             elsif behavior.purchase?
                 if !stack.empty?

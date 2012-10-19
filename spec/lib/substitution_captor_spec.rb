@@ -118,6 +118,27 @@ class SubstitutionCaptorSpec
             substitutions.last.bought_product.should eql 44444
         end
 
+        it "should consider the last looked up out of stock product for substitution" do
+            create_search_behavior(product = 11111, is_available = false, user = @user_1.id)
+
+            create_search_behavior(product = 33333, is_available = false, user = @user_1.id)
+            create_search_behavior(product = 44444, is_available = true, user = @user_1.id)
+            create_add_to_cart_behavior(product = 44444, user = @user_1.id)
+            create_purchase_behavior(product = 44444, order = 222, user = @user_1.id)
+
+            create_search_behavior(product = 55555, is_available = true, user = @user_1.id)
+            create_add_to_cart_behavior(product = 55555, user = @user_1.id)
+            create_purchase_behavior(product = 55555, order = 222, user = @user_1.id)
+
+            SubstitutionsCaptor.capture
+
+            substitutions = SubstitutionCount.find(:all)
+            substitutions.count.should eql 1
+            substitutions.first.count.should eq 1
+            substitutions.first.searched_product.should eql 33333
+            substitutions.first.bought_product.should eql 44444
+        end
+
         private
         def create_search_behavior(product, is_available, user)
             FactoryGirl.create(:search_behavior, :parameters => "{\"product\": #{product}, \"available\": #{is_available}}", :user_id => user)
