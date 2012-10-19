@@ -1,5 +1,5 @@
 class SubstitutionCount < ActiveRecord::Base
-    set_table_name :spree_substitution_counts
+    self.table_name = "spree_substitution_counts"
 
     def create_or_update_substitution
         substitution = SubstitutionCount.find_or_create_by_searched_product_and_bought_product(searched_product,bought_product)

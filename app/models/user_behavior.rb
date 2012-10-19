@@ -1,5 +1,5 @@
 class UserBehavior < ActiveRecord::Base
-    set_table_name :spree_user_behaviors
+    self.table_name = "spree_user_behaviors"
 
     def self.record_search(product, user, session_id)
         create_behavior('S', "{\"product\": #{product.id}, \"available\": #{!product.out_of_stock?} }", user, session_id)
@@ -11,7 +11,7 @@ class UserBehavior < ActiveRecord::Base
         end
     end
     def searched_and_not_available?
-        !JSON.parse(parameters)["available"]
+        action == 'S' && !JSON.parse(parameters)["available"]
     end
     def purchase?
         action == 'P'

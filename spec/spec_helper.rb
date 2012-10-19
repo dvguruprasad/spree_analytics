@@ -42,3 +42,5 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 end
+FactoryGirl.definition_file_paths << File.dirname(__FILE__) + '/factories'
+FactoryGirl.find_definitions

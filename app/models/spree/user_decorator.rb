@@ -1,6 +1,4 @@
-require 'spree_core'
-
-Spree::User.instance_eval do
+Spree.user_class.instance_eval do
     def monetary_distribution(ranges)
         order_value_frequency = {}
         ranges.each do |range|

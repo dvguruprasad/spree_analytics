@@ -1,6 +1,6 @@
 class SubstitutionsCaptor
     def self.capture
-        all_users = Spree::User.find(:all, :select => :id)
+        all_users = Spree.user_class.find(:all, :select => :id)
         all_users.each do |user|
             substitutions_by_user = find_all_substitutions_by_user(user)
             create_or_update(substitutions_by_user)
@@ -17,7 +17,7 @@ class SubstitutionsCaptor
             if behavior.searched_and_not_available?
                 stack << behavior
             elsif behavior.purchase?
-                if !stack.empty
+                if !stack.empty?
                     searched_product = stack.pop.product
                     bought_product = behavior.product
                     count = substitutions[substitution(searched_product, bought_product)]  
@@ -29,8 +29,9 @@ class SubstitutionsCaptor
     end
 
     def self.create_or_update(substitutions)
-        substitutions.each do |s|
-            s.create_or_update
+        substitutions.each do |substitution, count|
+            substitution.count = count
+            substitution.create_or_update_substitution
         end
     end
 
