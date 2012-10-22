@@ -3,8 +3,8 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_analytics'
   s.version     = '1.2.0'
-  s.summary     = 'TODO: Add gem summary here'
-  s.description = 'TODO: Add (optional) gem description here'
+  s.summary     = 'A simple analytics extension to spree'
+  s.description = 'A simple analytics extension to spree' 
   s.required_ruby_version = '>= 1.8.7'
 
   s.author    = 'ThoughtWorks'
