@@ -16,6 +16,10 @@ class UserBehavior < ActiveRecord::Base
         create_behavior('A',  "{\"product\": #{product_id}, \"order\": #{order_id}}", user, session_id)
     end
 
+    def self.record_remove_from_cart(product_id, order_id, user, session_id)
+        create_behavior('R',  "{\"product\": #{product_id}, \"order\": #{order_id}}", user, session_id)
+    end
+
     def searched_and_not_available?
         action == 'S' && !JSON.parse(parameters)["available"]
     end
