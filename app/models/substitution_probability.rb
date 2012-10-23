@@ -1,11 +1,11 @@
 class SubstitutionProbability < ActiveRecord::Base
-  self.table_name = "spree_substitution_probability"
+  self.table_name = "spree_substitution_probabilities"
   def self.generate_probabilities
         substitutions = SubstitutionCount.find(:all)
         p "Generating Probabilities"
         substitutions.each do |substitution|
           product_searched_and_out_of_stock = UserBehavior.number_of_times_searched_and_out_of_stock(substitution.searched_product)
-          probability_of_substitution = substitution.count.to_f/product_searched_and_out_of_stock.to_f if product_searched_and_out_of_stock != 0.0
+          probability_of_substitution = substitution.count/product_searched_and_out_of_stock.to_f if product_searched_and_out_of_stock != 0.0
           substitution_probability = SubstitutionProbability.new
           substitution_probability.searched_product = substitution.searched_product
           substitution_probability.bought_product = substitution.bought_product
