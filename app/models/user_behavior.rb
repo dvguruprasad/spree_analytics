@@ -12,6 +12,10 @@ class UserBehavior < ActiveRecord::Base
         end
     end
 
+    def self.number_of_times_searched_and_out_of_stock(searched_product)
+      parameters = "{\"product\": #{searched_product}, \"available\": false }"
+      UserBehavior.find_all_by_action_and_parameters('S',parameters).count
+    end
     def self.record_add_to_cart(product_id, order_id, user, session_id)
         create_behavior('A',  "{\"product\": #{product_id}, \"order\": #{order_id}}", user, session_id)
     end

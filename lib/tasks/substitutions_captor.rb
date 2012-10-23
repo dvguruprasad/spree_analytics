@@ -7,14 +7,7 @@ class SubstitutionsCaptor
             create_or_update(substitutions_by_user)
         end
     end
-    def self.generate_probabilities
-        substitutions = SubstitutionCount.find(:all)
-        p "Generating Probabilities"
-        substitutions.each do |substitution|
-
-        end
-    end
-    private
+        private
     def self.find_all_substitutions_by_user(user)
         behaviors = UserBehavior.find_all_by_user_id(user)
         behaviors = [] if behaviors.nil?
@@ -39,7 +32,7 @@ class SubstitutionsCaptor
     def self.create_or_update(substitutions)
         substitutions.each do |substitution, count|
             substitution.count = count
-            substitution.create_or_update_substitution
+            substitution = substitution.create_or_update_substitution
             p "Substitution found between: #{substitution.searched_product} and #{substitution.bought_product} with #{substitution.count} substitutions"
         end
     end
@@ -50,4 +43,5 @@ class SubstitutionsCaptor
         substitution.bought_product = bought_product
         substitution
     end
+
 end

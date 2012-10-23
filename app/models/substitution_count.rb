@@ -6,6 +6,7 @@ class SubstitutionCount < ActiveRecord::Base
         substitution.count=0 if substitution.count.nil?
         substitution.count += 1
         substitution.save
+        substitution
     end
 
     def eql?(other)
