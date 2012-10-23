@@ -11,6 +11,8 @@ class SubstitutionsCaptor
         substitutions = SubstitutionCount.find(:all)
         p "Generating Probabilities"
         substitutions.each do |substitution|
+
+        end
     end
     private
     def self.find_all_substitutions_by_user(user)
