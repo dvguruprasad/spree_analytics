@@ -7,7 +7,7 @@ Spree::OrdersController.class_eval do
         removed_line_items = @order.line_items.select {|li| li.quantity == 0}
         @order.line_items = @order.line_items.select {|li| li.quantity > 0 }
         fire_event('spree.order.contents_changed')
-        record_remove_from_cart_behavior(removed_line_items)
+        record_remove_from_cart_behavior(removed_line_items)unless spree_current_user.nil?
         respond_with(@order) { |format| format.html { redirect_to cart_path } }
       else
         respond_with(@order)
@@ -16,7 +16,7 @@ Spree::OrdersController.class_eval do
 
     def empty
       if @order = current_order
-        record_remove_from_cart_behavior(@order.line_items)
+        record_remove_from_cart_behavior(@order.line_items)unless spree_current_user.nil?
         @order.empty!
       end
 
@@ -25,19 +25,21 @@ Spree::OrdersController.class_eval do
 
     private
     def record_add_to_cart_behavior
-        params[:variants].each do |variant_id, quantity|
+        if !spree_current_user.nil?
+          params[:variants].each do |variant_id, quantity|
             quantity = quantity.to_i
             if quantity > 0
-                product_id = Spree::Variant.find_by_id(variant_id, :select => :product_id).product_id
-                UserBehavior.record_add_to_cart(product_id, @order.id, spree_current_user, session["session_id"])
+              product_id = Spree::Variant.find_by_id(variant_id, :select => :product_id).product_id
+              UserBehavior.record_add_to_cart(product_id, @order.id, spree_current_user, session["session_id"])
             end
-        end if params[:variants]
+          end if params[:variants]
 
-        params[:products].each do |product_id,variant_id|
+          params[:products].each do |product_id,variant_id|
             quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)
             quantity = params[:quantity][variant_id].to_i if params[:quantity].is_a?(Hash)
             UserBehavior.record_add_to_cart(product_id, @order.id, spree_current_user, session["session_id"]) if quantity > 0
-        end if params[:products]
+          end if params[:products]
+        end
     end
 
     def record_remove_from_cart_behavior(line_items_removed)
