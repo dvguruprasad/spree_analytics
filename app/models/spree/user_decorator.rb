@@ -110,7 +110,7 @@ Spree.user_class.class_eval do
     def is_a_substitution(searched, bought)
         searched_product = Spree::Product.find_by_id(searched)
         bought_product = Spree::Product.find_by_id(bought)
-        searched_product.taxons.first == bought_product.taxons.first
+        searched_product.category_taxon == bought_product.category_taxon
     end
 
     def substitution(searched_product, bought_product)

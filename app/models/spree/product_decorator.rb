@@ -51,7 +51,13 @@ end
 
 
 Spree::Product.class_eval do
+    CATEGORIES_TAXONOMY_NAME = "Categories"
+
     def out_of_stock?
         count_on_hand == 0
+    end
+
+    def category_taxon
+        taxons.select {|t| t.taxonomy.name == CATEGORIES_TAXONOMY_NAME}
     end
 end
