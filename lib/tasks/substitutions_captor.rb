@@ -1,15 +1,17 @@
 class SubstitutionsCaptor
     def self.capture
+        last_capture_timestamp = SubstitutionIdentificationTimestamp.read_and_update
         all_users = Spree.user_class.find(:all, :select => :id)
         p "Creating Substitutions"
         all_users.each do |user|
-            substitutions_by_user = find_all_substitutions_by_user(user)
+            substitutions_by_user = find_all_substitutions_by_user(user, last_capture_timestamp)
             create_or_update(substitutions_by_user)
         end
     end
-        private
-    def self.find_all_substitutions_by_user(user)
-        behaviors = UserBehavior.find_all_by_user_id(user)
+
+    private
+    def self.find_all_substitutions_by_user(user, last_capture_timestamp)
+        behaviors = UserBehavior.find(:all, :conditions => ["user_id = ? and created_at > ?", user, last_capture_timestamp])
         behaviors = [] if behaviors.nil?
         stack = []
         substitutions = Hash.new(0)
