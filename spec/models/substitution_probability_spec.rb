@@ -2,32 +2,54 @@ require 'spec_helper'
 
 class SubstitutionProbabilitySpec
     describe "SubstitutionProbability" do
-        context "#generate_proabilities" do
+        @@searched = 12345
+        @@purchased = 54321
+
+        context ".generate_proabilities" do
             it "should find substitution probability of a product given substitution count" do
-                create_search_behavior(12345,false,1)
-                create_search_behavior(12345,false,1)
-                create_purchase_behavior(54321,999,1)
-                create_search_behavior(12345,false,1)
-                create_purchase_behavior(54321,999,1)
-                create_search_behavior(12345,false,1)
-                create_purchase_behavior(54321,999,1)
-                create_search_behavior(12345,false,1)
-                create_purchase_behavior(54321,999,1)
-                create_search_behavior(12345,false,1)
-                create_purchase_behavior(54321,999,1)
-                create_search_behavior(12345,false,1)
-                substitution_count = Factory.create(:substitution, searched_product: 12345, bought_product: 54321, count: 5)
+                create_behaviors(@@searched, @@purchased, 5, 2)
+                Factory.create(:substitution, searched_product: @@searched, bought_product: @@purchased, count: 5)
                 SubstitutionProbability.generate_probabilities
                 substitution_probabilities = SubstitutionProbability.find(:all)
                 substitution_probabilities.count eql 1
-                substitution_probabilities.first.searched_product.should eql 12345
-                substitution_probabilities.first.bought_product.should eql 54321
+                substitution_probabilities.first.searched_product.should eql @@searched
+                substitution_probabilities.first.bought_product.should eql @@purchased
                 substitution_probabilities.first.probability.should eql 5.0/7.0
 
             end
+
+            it "should generate substitution probabilities for all substituted products" do
+                searched_2, purchased_2 = 11111, 22222
+                searched_3, purchased_3 = 77777, 88888
+                create_behaviors(@@searched, @@purchased, 5, 2)
+                Factory.create(:substitution, searched_product: @@searched, bought_product: @@purchased, count: 5)
+                create_behaviors(searched_2, purchased_2, 3, 4)
+                Factory.create(:substitution, searched_product: searched_2, bought_product: purchased_2, count: 3)
+                create_behaviors(searched_3, purchased_3, 6, 3)
+                Factory.create(:substitution, searched_product: searched_3, bought_product: purchased_3, count: 6)
+
+                SubstitutionProbability.generate_probabilities
+                substitution_probabilities = SubstitutionProbability.find(:all)
+                substitution_probabilities.count eql 3
+                assert_probabilities(substitution_probabilities, @@searched, @@purchased, 0.7142857142857143)
+                assert_probabilities(substitution_probabilities, searched_2, purchased_2, 0.42857142857142855)
+                assert_probabilities(substitution_probabilities, searched_3, purchased_3, 0.6666666666666666)
+
+            end
+
         end
 
         private
+        def create_behaviors(searched_product, purchased_product, number_of_substitutions, number_of_searches_when_out_of_stock)
+            number_of_substitutions.times do
+                create_search_behavior(searched_product, false,1)
+                create_purchase_behavior(purchased_product,999,1)
+            end
+            number_of_searches_when_out_of_stock.times do
+                create_search_behavior(searched_product, false,1)
+            end
+        end
+
         def create_search_behavior(product, is_available, user)
             FactoryGirl.create(:search_behavior, :parameters => "{\"product\": #{product}, \"available\": #{is_available} }", :user_id => user)
         end
@@ -36,5 +58,10 @@ class SubstitutionProbabilitySpec
             FactoryGirl.create(:purchase_behavior, :parameters => "{\"product\": #{product}, \"order\": #{order} }", :user_id => user)
         end
 
+        def assert_probabilities(actual_probabilities, searched, purchased, probability)
+            actual_probabilities.any? do |p|
+                p.bought_product == purchased && p.searched_product == searched && p.probability == probability
+            end.should be_true
+        end
     end
 end

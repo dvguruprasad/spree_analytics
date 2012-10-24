@@ -6,7 +6,8 @@ end
 task :generate_probabilities => :environment do
     SubstitutionProbability.generate_probabilities
 end
-task :capture_substitution_probabilities => :environment do
+
+task :capture_substitutions_and_generate_probabilities => :environment do
     SubstitutionsCaptor.capture
     SubstitutionProbability.generate_probabilities
 end
