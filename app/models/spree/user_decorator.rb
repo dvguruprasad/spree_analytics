@@ -42,7 +42,7 @@ Spree.user_class.instance_eval do
 
     private
     def all_users
-        @users ||= Spree::User.find(:all, :select => "id").map {|u| {:user_id => u.id }}
+        @users ||= Spree.user_class.find(:all, :select => "id").map {|u| {:user_id => u.id }}
     end
 
     def orders
@@ -81,5 +81,42 @@ Spree.user_class.instance_eval do
             distribution[key] = ((count / total.to_f) * 100).round(2)
         end
         distribution
+    end
+
+end
+
+Spree.user_class.class_eval do
+    def substitutions_since(last_capture_timestamp)
+        behaviors = UserBehavior.find(:all, :conditions => ["user_id = ? and created_at > ?", id, last_capture_timestamp])
+        behaviors = [] if behaviors.nil?
+        stack = []
+        substitutions_hash = Hash.new(0)
+        behaviors.each do |behavior|
+            if behavior.searched_and_not_available?
+                stack.pop if !stack.empty?
+                stack << behavior
+            elsif behavior.purchase?
+                if !stack.empty? && is_a_substitution(stack.first.product, behavior.product)
+                    searched_product = stack.pop.product
+                    bought_product = behavior.product
+                    count = substitutions_hash[substitution(searched_product, bought_product)]
+                    substitutions_hash[substitution(searched_product, bought_product)]  = count + 1
+                end
+            end
+        end
+        substitutions_hash.collect {|s,c| s.count = c; s}
+    end
+
+    def is_a_substitution(searched, bought)
+        searched_product = Spree::Product.find_by_id(searched)
+        bought_product = Spree::Product.find_by_id(bought)
+        searched_product.taxons.first == bought_product.taxons.first
+    end
+
+    def substitution(searched_product, bought_product)
+        substitution = SubstitutionCount.new
+        substitution.searched_product = searched_product
+        substitution.bought_product = bought_product
+        substitution
     end
 end
