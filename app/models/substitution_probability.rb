@@ -12,8 +12,15 @@ class SubstitutionProbability < ActiveRecord::Base
   end
 
   def self.create_or_update_probability(searched, bought, probability)
-        substitution = SubstitutionProbability.find_or_create_by_searched_product_and_bought_product(searched, bought)
+        substitution = find_or_create_by_searched_product_and_bought_product(searched, bought)
         substitution.probability = probability
         substitution.save
+  end
+
+  def self.find_substitutes_for(product)
+      return [] if product.nil?
+      substitution_probabilities = find(:all, :conditions => ["searched_product = ?", product.id],
+                                                        :order => "probability DESC", :limit => 5)
+      substitution_probabilities.map{|p| Spree::Product.find_by_id p.bought_product}
   end
 end

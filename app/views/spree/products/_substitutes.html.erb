@@ -1,0 +1,8 @@
+<% if !@substitutes.empty? %>
+    You might also be interested in
+    <br/>
+    <% @substitutes.each do |substitute|%>
+        <%= image_tag(substitute.images.first.attachment.url(:small)) %>
+        <%= substitute.name %>
+    <% end%>
+<% end%>
