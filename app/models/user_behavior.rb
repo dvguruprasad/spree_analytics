@@ -7,9 +7,7 @@ class UserBehavior < ActiveRecord::Base
 
 
     def self.record_purchase(order_id, product_ids, user, session_id)
-        product_ids.each do |product|
-            create_behavior('P',  "{\"product\": #{product}, \"order\": #{order_id}}", user, session_id)
-        end
+        create_behavior('P',  "{\"products\": #{product_ids.inspect}, \"order\": #{order_id}}", user, session_id)
     end
 
     def self.number_of_times_searched_and_out_of_stock(searched_product)
@@ -31,8 +29,13 @@ class UserBehavior < ActiveRecord::Base
     def purchase?
         action == 'P'
     end
+
     def product
         JSON.parse(parameters)["product"]
+    end
+
+    def products
+        JSON.parse(parameters)["products"]
     end
 
     private

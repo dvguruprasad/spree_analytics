@@ -11,3 +11,5 @@ task :capture_substitutions_and_generate_probabilities => :environment do
     SubstitutionsCaptor.capture
     SubstitutionProbability.generate_probabilities
 end
+
+task :gsp => :capture_substitutions_and_generate_probabilities

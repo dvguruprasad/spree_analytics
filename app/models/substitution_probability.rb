@@ -18,9 +18,9 @@ class SubstitutionProbability < ActiveRecord::Base
   end
 
   def self.find_substitutes_for(product)
-      return [] if product.nil?
+      return {} if product.nil?
       substitution_probabilities = find(:all, :conditions => ["searched_product = ?", product.id],
                                                         :order => "probability DESC", :limit => 5)
-      substitution_probabilities.map{|p| Spree::Product.find_by_id p.bought_product}
+      substitution_probabilities.map{|p| {:product => Spree::Product.find_by_id(p.bought_product), :probability => p.probability}}
   end
 end

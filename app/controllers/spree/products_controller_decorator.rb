@@ -2,7 +2,6 @@ Spree::ProductsController.class_eval do
     after_filter :record_search_behavior, :only  => :show
 
     def show
-        Rails.logger.info "###### in overridden products#show"
         return unless @product
 
         @variants = Spree::Variant.active.includes([:option_values, :images]).where(:product_id => @product.id)
@@ -17,6 +16,12 @@ Spree::ProductsController.class_eval do
         end
 
         @substitutes = SubstitutionProbability.find_substitutes_for(@product)
+        if !@substitutes.empty? && @substitutes.first[:probability] > 0.2 && spree_current_user.is_loyal?
+            @promotion = {}
+            @promotion[:product] = @substitutes.first[:product]
+            @promotion[:discount] = 10
+            @substitutes.shift
+        end
 
         respond_with(@product)
     end

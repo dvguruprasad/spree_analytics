@@ -54,7 +54,7 @@ Spree::Product.class_eval do
     CATEGORIES_TAXONOMY_NAME = "Categories"
 
     def out_of_stock?
-        count_on_hand == 0
+        variants.empty? ? count_on_hand == 0 : variants.all?{|v| v.count_on_hand == 0}
     end
 
     def category_taxon

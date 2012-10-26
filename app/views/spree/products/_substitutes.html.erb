@@ -1,8 +1,17 @@
+<% if !@promotion.nil?%>
+    Discounts </br>
+    <%= image_tag(@promotion[:product].images.first.attachment.url(:small)) %>
+    <%= @promotion[:product].name %>
+    <%= @promotion[:discount] %>% Off!
+
+<% end %>
+
 <% if !@substitutes.empty? %>
     You might also be interested in
     <br/>
     <% @substitutes.each do |substitute|%>
-        <%= image_tag(substitute.images.first.attachment.url(:small)) %>
-        <%= substitute.name %>
+        <% product = substitute[:product] %>
+        <%= image_tag(product.images.first.attachment.url(:small)) %>
+        <%= product.name %>
     <% end%>
 <% end%>

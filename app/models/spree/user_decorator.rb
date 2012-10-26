@@ -88,7 +88,6 @@ end
 Spree.user_class.class_eval do
     def substitutions_since(last_capture_timestamp)
         behaviors = UserBehavior.find(:all, :conditions => ["user_id = ? and created_at > ?", id, last_capture_timestamp])
-        behaviors = [] if behaviors.nil?
         stack = []
         substitutions_hash = Hash.new(0)
         behaviors.each do |behavior|
@@ -96,17 +95,25 @@ Spree.user_class.class_eval do
                 stack.pop if !stack.empty?
                 stack << behavior
             elsif behavior.purchase?
-                if !stack.empty? && is_a_substitution(stack.first.product, behavior.product)
-                    searched_product = stack.pop.product
-                    bought_product = behavior.product
-                    count = substitutions_hash[substitution(searched_product, bought_product)]
-                    substitutions_hash[substitution(searched_product, bought_product)]  = count + 1
+                if !stack.empty?
+                    behavior.products.each do |product|
+                    if is_a_substitution(stack.first.product, product)
+                        searched_product = stack.first.product
+                        substitutions_hash[substitution(searched_product, product)]  += 1
+                    end
+                    end
+                stack.pop
                 end
             end
         end
         substitutions_hash.collect {|s,c| s.count = c; s}
     end
 
+    def is_loyal?
+        true
+    end
+
+    private
     def is_a_substitution(searched, bought)
         searched_product = Spree::Product.find_by_id(searched)
         bought_product = Spree::Product.find_by_id(bought)

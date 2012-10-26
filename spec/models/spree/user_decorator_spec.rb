@@ -118,7 +118,7 @@ class UserDecoratorSpec
         end
 
         def create_purchase_behavior(product, order, user)
-            FactoryGirl.create(:purchase_behavior, :parameters => "{\"product\": #{product}, \"order\": #{order}}", :user_id => user)
+            FactoryGirl.create(:purchase_behavior, :parameters => "{\"products\": [#{product}], \"order\": #{order}}", :user_id => user)
         end
 
         def create_add_to_cart_behavior(product, user)
