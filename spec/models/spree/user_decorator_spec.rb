@@ -119,15 +119,15 @@ class UserDecoratorSpec
 
         private
         def create_search_behavior(product, is_available, user)
-            FactoryGirl.create(:search_behavior, :parameters => "{\"product\": #{product}, \"available\": #{is_available}}", :user_id => user)
+            FactoryGirl.create(:search_behavior, product: product, is_available: is_available, user_id: user)
         end
 
         def create_purchase_behavior(products, order, user)
-            FactoryGirl.create(:purchase_behavior, :parameters => "{\"products\": #{products.inspect}, \"order\": #{order}}", :user_id => user)
+            FactoryGirl.create(:purchase_behavior, products: products, order: order, user_id: user)
         end
 
         def create_add_to_cart_behavior(product, user)
-            FactoryGirl.create(:add_to_cart_behavior, :parameters => "{\"product\": #{product}}}", :user_id => user)
+            FactoryGirl.create(:add_to_cart_behavior, product: product, user_id: user)
         end
 
         def assert_substitution(substitution, searched_product, bought_product, count)

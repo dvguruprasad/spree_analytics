@@ -51,7 +51,7 @@ class SubstitutionProbabilitySpec
         end
 
         def create_search_behavior(product, is_available, user)
-            FactoryGirl.create(:search_behavior, :parameters => "{\"product\": #{product}, \"available\": #{is_available} }", :user_id => user)
+            FactoryGirl.create(:search_behavior, product: product, is_available: is_available, user_id: user)
         end
 
         def create_purchase_behavior(product, order, user)

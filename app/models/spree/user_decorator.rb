@@ -110,7 +110,7 @@ Spree.user_class.class_eval do
     end
 
     def is_loyal?
-        true
+        orders.count(:conditions  => ["state=? and completed_at IS NOT NULL","complete"]) > 1
     end
 
     private
