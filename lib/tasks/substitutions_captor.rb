@@ -11,8 +11,8 @@ class SubstitutionsCaptor
     private
     def self.create_or_update(substitutions)
         substitutions.each do |substitution|
+            p "#{substitution.count} substitution found between: #{substitution.searched_product} and #{substitution.bought_product}"
             substitution = substitution.create_or_update_substitution
-            p "Substitution found between: #{substitution.searched_product} and #{substitution.bought_product} with #{substitution.count} substitutions"
         end
     end
 end

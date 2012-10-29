@@ -68,6 +68,7 @@ class SubstitutionCaptorSpec
             substitutions.last.bought_product.should eql 44444
         end
 
+
         def substitution_count(searched, bought, count)
             substitution_count = SubstitutionCount.new
             substitution_count.searched_product= searched

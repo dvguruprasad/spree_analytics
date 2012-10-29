@@ -16,20 +16,20 @@ class UserDecoratorSpec
             end
 
             it "should not return any substitutions when the only behavior is search" do
-                create_search_behavior(product = 12345, is_available = true, @user.id)
+                create_search_behavior(product = @product_1.id, is_available = true, @user.id)
                 substitutions = @user.substitutions_since(epoch)
                 substitutions.count.should eq 0
             end
 
             it "should not return any substitutions when the only behavior is search for a product that is out of stock" do
-                create_search_behavior(product = 12345, is_available = false, @user.id)
+                create_search_behavior(product = @product_1.id, is_available = false, @user.id)
                 substitutions = @user.substitutions_since(epoch)
                 substitutions.count.should eq 0
             end
 
             it "should not return any substitutions when the only behavior is a purchase" do
                 substitutionCount = SubstitutionCount.new
-                create_purchase_behavior(products = [12345], order = 111, @user.id)
+                create_purchase_behavior(products = [@product_1.id], order = 111, @user.id)
 
                 substitutions = @user.substitutions_since(epoch)
                 substitutions.count.should eq 0
@@ -37,9 +37,9 @@ class UserDecoratorSpec
 
 
             it "should not return any substitutions when the a product was searched for and purchased" do
-                create_search_behavior(product = 99999, is_available = true, @user.id)
-                create_add_to_cart_behavior(product = 99999, @user.id)
-                create_purchase_behavior(products = [99999], order = 111, @user.id)
+                create_search_behavior(product = @product_1.id, is_available = true, @user.id)
+                create_add_to_cart_behavior(product = @product_1.id, @user.id)
+                create_purchase_behavior(products = [@product_1.id], order = 111, @user.id)
 
                 substitutions = @user.substitutions_since(epoch)
                 substitutions.count.should eql 0
@@ -58,18 +58,18 @@ class UserDecoratorSpec
             end
 
             it "should consider the last looked up out of stock product for substitution" do
-                @product_3 = FactoryGirl.create(:custom_product, :taxons => [@deoderant_taxon, @nike_brand])
-                @product_4 = FactoryGirl.create(:custom_product, :taxons => [@deoderant_taxon, @reebok_brand])
+                product_3 = FactoryGirl.create(:custom_product, :taxons => [@deoderant_taxon, @nike_brand])
+                product_4 = FactoryGirl.create(:custom_product, :taxons => [@deoderant_taxon, @reebok_brand])
 
 
                 create_search_behavior(product = @product_1.id, is_available = false, @user.id)
-                create_search_behavior(product = @product_3.id, is_available = false, @user.id)
+                create_search_behavior(product = product_3.id, is_available = false, @user.id)
                 create_purchase_behavior(products = [@product_2.id], order = 222, @user.id)
-                create_purchase_behavior(products = [@product_4.id], order = 444, @user.id)
+                create_purchase_behavior(products = [product_4.id], order = 444, @user.id)
 
                 substitutions = @user.substitutions_since(epoch)
                 substitutions.count.should eql 1
-                assert_substitution(substitutions.first, @product_3, @product_2, 1)
+                assert_substitution(substitutions.first, product_3, @product_2, 1)
             end
 
             it "should not capture a substitution when the products belong to different categories" do
@@ -102,6 +102,21 @@ class UserDecoratorSpec
                 substitutions.count.should eq 1
                 assert_substitution(substitutions.first, @product_1, @product_2, 1)
             end
+
+            it "should capture the substitution when products belonging to multiple categories and were out of stock were looked up and then a different product bought" do
+                @product_3 = FactoryGirl.create(:custom_product, :taxons => [@clothing_taxon, @reebok_brand])
+                @product_4 = FactoryGirl.create(:custom_product, :taxons => [@deoderant_taxon, @nike_brand])
+                create_search_behavior(product = @product_1.id, is_available = false, @user.id)
+                create_search_behavior(product = @product_2.id, is_available = false, @user.id)
+                create_purchase_behavior(products = [@product_3.id], order = 222, @user.id)
+                create_purchase_behavior(products = [@product_4.id], order = 333, @user.id)
+
+                substitutions = @user.substitutions_since(epoch)
+                substitutions.count.should eq 2
+                assert_substitution(substitutions.first, @product_1, @product_3, 1)
+                assert_substitution(substitutions.last, @product_2, @product_4, 1)
+            end
+
 
             it "should capture all products bought as part of an order, after another unavailable product was looked at, as substitutions" do
                 @product_2 = FactoryGirl.create(:custom_product, :taxons => [@nike_brand, @clothing_taxon])

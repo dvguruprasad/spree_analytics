@@ -23,6 +23,10 @@ class UserBehavior < ActiveRecord::Base
         create_behavior('R',  "{\"product\": #{product_id}, \"order\": #{order_id}}", user, session_id)
     end
 
+    def self.all_user_behavior_since(user_id, last_capture_timestamp)
+        find(:all, :conditions => ["user_id = ? and created_at > ?", user_id, last_capture_timestamp])
+    end
+
     def searched_and_not_available?
         action == 'S' && !JSON.parse(parameters)["available"]
     end

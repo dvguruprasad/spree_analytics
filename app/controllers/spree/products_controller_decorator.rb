@@ -16,7 +16,8 @@ Spree::ProductsController.class_eval do
         end
 
         @substitutes = SubstitutionProbability.find_substitutes_for(@product)
-        if !@substitutes.empty? && @substitutes.first[:probability] > 0.2 && spree_current_user.is_loyal?
+        if !@substitutes.empty? && @substitutes.first[:probability] > Spree::Config.probability_threshold_for_discounts &&
+                              spree_current_user.is_loyal?
             @promotion = {}
             @promotion[:product] = @substitutes.first[:product]
             @promotion[:discount] = 10

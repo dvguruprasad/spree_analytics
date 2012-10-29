@@ -87,22 +87,26 @@ end
 
 Spree.user_class.class_eval do
     def substitutions_since(last_capture_timestamp)
-        behaviors = UserBehavior.find(:all, :conditions => ["user_id = ? and created_at > ?", id, last_capture_timestamp])
-        stack = []
+        behaviors = UserBehavior.all_user_behavior_since(id, last_capture_timestamp)
+        stacks = Hash.new
         substitutions_hash = Hash.new(0)
         behaviors.each do |behavior|
             if behavior.searched_and_not_available?
-                stack.pop if !stack.empty?
-                stack << behavior
+                category = category(behavior.product)
+                stacks[category] ||= []
+                stacks[category].pop if !stacks[category].empty?
+                stacks[category] << behavior
             elsif behavior.purchase?
-                if !stack.empty?
-                    behavior.products.each do |product|
-                    if is_a_substitution(stack.first.product, product)
-                        searched_product = stack.first.product
-                        substitutions_hash[substitution(searched_product, product)]  += 1
+                products_by_category = products_grouped_by_category(behavior.products)
+                products_by_category.each do |category, products|
+                    next if stacks[category].nil? || stacks[category].empty?
+                    products.each do |p|
+                        searched_product = stacks[category].first.product
+                        if is_a_substitution(searched_product, p)
+                            substitutions_hash[substitution(searched_product, p)]  += 1
+                        end
                     end
-                    end
-                stack.pop
+                    stacks[category].pop
                 end
             end
         end
@@ -125,5 +129,19 @@ Spree.user_class.class_eval do
         substitution.searched_product = searched_product
         substitution.bought_product = bought_product
         substitution
+    end
+
+    def products_grouped_by_category(products)
+        result = {}
+        products.each do |p|
+            c = category(p)
+            result[c] ||= []
+            result[c] << p
+        end
+        result
+    end
+
+    def category(product_id)
+        Spree::Product.find_by_id(product_id).category_taxon
     end
 end
