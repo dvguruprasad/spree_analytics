@@ -117,7 +117,6 @@ class UserDecoratorSpec
                 assert_substitution(substitutions.last, @product_2, @product_4, 1)
             end
 
-
             it "should capture all products bought as part of an order, after another unavailable product was looked at, as substitutions" do
                 @product_2 = FactoryGirl.create(:custom_product, :taxons => [@nike_brand, @clothing_taxon])
                 @product_3 = FactoryGirl.create(:custom_product, :taxons => [@reebok_brand, @clothing_taxon])
@@ -129,6 +128,15 @@ class UserDecoratorSpec
                 substitutions.count.should eq 2
                 assert_substitution(substitutions.first, @product_1, @product_2, 1)
                 assert_substitution(substitutions.last, @product_1, @product_3, 1)
+            end
+
+            it "should not capture substitution with the searched and bought product as the same" do
+                create_search_behavior(product = @product_1.id, is_available = false, @user.id)
+                create_search_behavior(product = @product_1.id, is_available = true, @user.id)
+                create_purchase_behavior(products = [@product_1.id], order = 222, @user.id)
+
+                substitutions = @user.substitutions_since(epoch)
+                substitutions.count.should eq 0
             end
         end
 

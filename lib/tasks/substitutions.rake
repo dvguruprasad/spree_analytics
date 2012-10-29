@@ -1,14 +1,12 @@
-require "#{File.expand_path(File.dirname(__FILE__))}/substitutions_captor"
-
 task :capture_substitutions  => :environment do
-    SubstitutionsCaptor.capture
+    SubstitutionCount.capture
 end
 task :generate_probabilities => :environment do
     SubstitutionProbability.generate_probabilities
 end
 
 task :capture_substitutions_and_generate_probabilities => :environment do
-    SubstitutionsCaptor.capture
+    SubstitutionCount.capture
     SubstitutionProbability.generate_probabilities
 end
 

@@ -6,8 +6,8 @@
 
 <% end %>
 
-<% if !@substitutes.empty? %>
-    You might also be interested in
+<% if !@substitutes.nil? && !@substitutes.empty? %>
+    You might be interested in
     <br/>
     <% @substitutes.each do |substitute|%>
         <% product = substitute[:product] %>
