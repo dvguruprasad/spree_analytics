@@ -1,0 +1,1 @@
+class UpsellSubstitutionIdentificationTimestamp < SubstitutionIdentificationTimestamp; end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-class SubstitutionCountSpec
-    describe "SubstitutionCount" do
+class OOSSubstitutionCountSpec
+    describe "OOSSubstitutionCount" do
         context "#eql?" do
             it "should be able to find if two SubstituionCounts are equal" do
                 substitution_1 = Factory.create(:substitution, searched_product: 12345, bought_product: 54321, count: 5)
@@ -25,9 +25,9 @@ class SubstitutionCountSpec
                 @user_1.should_receive(:substitutions_since).with(any_args()).and_return(substitutions_1)
                 @user_2.should_receive(:substitutions_since).with(any_args()).and_return(substitutions_2)
 
-                SubstitutionCount.capture_out_of_stock_substitutions
+                OOSSubstitutionCount.capture
 
-                substitutions = SubstitutionCount.find(:all)
+                substitutions = OOSSubstitutionCount.find(:all)
                 substitutions.count.should eql 1
                 substitutions.first.count.should eq 2
                 substitutions.first.searched_product.should eql 11111
@@ -44,9 +44,9 @@ class SubstitutionCountSpec
                 @user_1.should_receive(:substitutions_since).with(any_args()).and_return(substitutions_1)
                 @user_2.should_receive(:substitutions_since).with(any_args()).and_return(substitutions_2)
 
-                SubstitutionCount.capture_out_of_stock_substitutions
+                OOSSubstitutionCount.capture
 
-                substitutions = SubstitutionCount.find(:all)
+                substitutions = OOSSubstitutionCount.find(:all)
                 substitutions.count.should eql 2
                 substitutions.first.count.should eq 1
                 substitutions.first.searched_product.should eql 11111
@@ -62,9 +62,9 @@ class SubstitutionCountSpec
                 @user_1.should_receive(:substitutions_since).with(any_args()).and_return(substitutions)
                 Spree.user_class.should_receive(:find).with(:all, :select => :id).and_return([@user_1])
 
-                SubstitutionCount.capture_out_of_stock_substitutions
+                OOSSubstitutionCount.capture
 
-                substitutions = SubstitutionCount.find(:all)
+                substitutions = OOSSubstitutionCount.find(:all)
                 substitutions.count.should eql 2
                 substitutions.first.count.should eq 1
                 substitutions.first.searched_product.should eql 11111
@@ -77,7 +77,7 @@ class SubstitutionCountSpec
 
 
             def substitution_count(searched, bought, count)
-                substitution_count = SubstitutionCount.new
+                substitution_count = OOSSubstitutionCount.new
                 substitution_count.searched_product= searched
                 substitution_count.bought_product= bought
                 substitution_count.count = count
