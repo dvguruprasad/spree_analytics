@@ -17,8 +17,7 @@ Spree::ProductsController.class_eval do
 
         if(@product.out_of_stock?)
             @substitutes = SubstitutionProbability.find_substitutes_for(@product)
-            if !@substitutes.empty? && @substitutes.first[:probability] > Spree::Config.probability_threshold_for_discounts &&
-                spree_current_user.is_loyal?
+            if !@substitutes.empty? && @substitutes.first[:probability] > Spree::Config.probability_threshold_for_discounts && current_user_is_loyal?
                 @promotion = {}
                 @promotion[:product] = @substitutes.first[:product]
                 @promotion[:discount] = 10
@@ -33,5 +32,9 @@ Spree::ProductsController.class_eval do
     private
     def record_search_behavior
         UserBehavior.record_search(@product, spree_current_user, session["session_id"]) unless spree_current_user.nil?
+    end
+
+    def current_user_is_loyal?
+        !spree_current_user.nil? && spree_current_user.is_loyal?
     end
 end
