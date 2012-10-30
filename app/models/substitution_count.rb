@@ -1,13 +1,25 @@
 class SubstitutionCount < ActiveRecord::Base
     self.table_name = "spree_substitution_counts"
 
-    def self.capture
+    def self.capture_out_of_stock_substitutions
         last_capture_timestamp = SubstitutionIdentificationTimestamp.read_and_update
         all_users = Spree.user_class.find(:all, :select => :id)
         all_users.each do |user|
             substitutions = user.substitutions_since(last_capture_timestamp)
             substitutions.each do |substitution|
-                p "#{substitution.count} substitution found between: #{substitution.searched_product} and #{substitution.bought_product}"
+                p "#{substitution.count} out of stock substitution found between: #{substitution.searched_product} and #{substitution.bought_product}"
+                substitution = substitution.create_or_update_substitution
+            end
+        end
+    end
+
+    def self.capture_upsell_substitutions
+        last_capture_timestamp = SubstitutionIdentificationTimestamp.read_and_update
+        all_users = Spree.user_class.find(:all, :select => :id)
+        all_users.each do |user|
+            substitutions = user.substitutions_since(last_capture_timestamp)
+            substitutions.each do |substitution|
+                p "#{substitution.count} out of stock substitution found between: #{substitution.searched_product} and #{substitution.bought_product}"
                 substitution = substitution.create_or_update_substitution
             end
         end

@@ -10,7 +10,7 @@ class SubstitutionCountSpec
             end
         end
 
-        context ".capture" do
+        context ".capture_out_of_stock_substitutions" do
             before(:each) do
                 @user_1 = double("user")
                 @user_2 = double("user")
@@ -25,7 +25,7 @@ class SubstitutionCountSpec
                 @user_1.should_receive(:substitutions_since).with(any_args()).and_return(substitutions_1)
                 @user_2.should_receive(:substitutions_since).with(any_args()).and_return(substitutions_2)
 
-                SubstitutionCount.capture
+                SubstitutionCount.capture_out_of_stock_substitutions
 
                 substitutions = SubstitutionCount.find(:all)
                 substitutions.count.should eql 1
@@ -44,7 +44,7 @@ class SubstitutionCountSpec
                 @user_1.should_receive(:substitutions_since).with(any_args()).and_return(substitutions_1)
                 @user_2.should_receive(:substitutions_since).with(any_args()).and_return(substitutions_2)
 
-                SubstitutionCount.capture
+                SubstitutionCount.capture_out_of_stock_substitutions
 
                 substitutions = SubstitutionCount.find(:all)
                 substitutions.count.should eql 2
@@ -62,7 +62,7 @@ class SubstitutionCountSpec
                 @user_1.should_receive(:substitutions_since).with(any_args()).and_return(substitutions)
                 Spree.user_class.should_receive(:find).with(:all, :select => :id).and_return([@user_1])
 
-                SubstitutionCount.capture
+                SubstitutionCount.capture_out_of_stock_substitutions
 
                 substitutions = SubstitutionCount.find(:all)
                 substitutions.count.should eql 2
