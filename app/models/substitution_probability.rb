@@ -1,5 +1,8 @@
 class SubstitutionProbability < ActiveRecord::Base
   self.table_name = "spree_substitution_probabilities"
+
+  attr_accessible :searched_product,:bought_product, :probability
+
   def self.generate_probabilities
         substitutions = SubstitutionCount.find(:all)
         substitutions.each do |substitution|
@@ -24,3 +27,6 @@ class SubstitutionProbability < ActiveRecord::Base
       substitution_probabilities.map{|p| {:product => Spree::Product.find_by_id(p.bought_product), :probability => p.probability}}
   end
 end
+
+class OOSSubstitutionProbability < SubstitutionProbability; end
+class UpsellSubstitutionProbability < SubstitutionProbability; end
