@@ -13,6 +13,13 @@ class SubstitutionCount < ActiveRecord::Base
     end
   end
 
+  def self.substitution(searched_product, bought_product)
+    substitution = self.new
+    substitution.searched_product = searched_product
+    substitution.bought_product = bought_product
+    substitution
+  end
+
   def create_or_update_substitution
     substitution = self.class.find_or_create_by_searched_product_and_bought_product(searched_product,bought_product)
     substitution.count=0 if substitution.count.nil?

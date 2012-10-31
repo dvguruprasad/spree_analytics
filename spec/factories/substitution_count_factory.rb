@@ -1,5 +1,5 @@
 FactoryGirl.define do
-    factory :substitution, :class => SubstitutionCount do
+    factory :oos_substitution, :class => OOSSubstitutionCount do
 
     end
 end

@@ -16,7 +16,7 @@ Spree::ProductsController.class_eval do
         end
 
         if(@product.out_of_stock?)
-            @substitutes = SubstitutionProbability.find_substitutes_for(@product)
+            @substitutes = OOSSubstitutionProbability.find_substitutes_for(@product)
             if !@substitutes.empty? && @substitutes.first[:probability] > Spree::Config.probability_threshold_for_discounts && current_user_is_loyal?
                 @promotion = {}
                 @promotion[:product] = @substitutes.first[:product]

@@ -8,10 +8,10 @@ class OOSSubstitutionProbabilitySpec
         context ".generate_proabilities" do
             it "should find substitution probability of a product given substitution count" do
                 create_behaviors(@@searched, @@purchased, 5, 2)
-                Factory.create(:substitution, searched_product: @@searched, bought_product: @@purchased, count: 5)
+                substitution = Factory.create(:oos_substitution, searched_product: @@searched, bought_product: @@purchased, count: 5)
                 OOSSubstitutionProbability.generate_probabilities
                 substitution_probabilities = OOSSubstitutionProbability.find(:all)
-                substitution_probabilities.count eql 1
+                substitution_probabilities.count.should eql 1
                 substitution_probabilities.first.searched_product.should eql @@searched
                 substitution_probabilities.first.bought_product.should eql @@purchased
                 substitution_probabilities.first.probability.should eql 5.0/7.0
@@ -22,11 +22,11 @@ class OOSSubstitutionProbabilitySpec
                 searched_2, purchased_2 = 11111, 22222
                 searched_3, purchased_3 = 77777, 88888
                 create_behaviors(@@searched, @@purchased, 5, 2)
-                Factory.create(:substitution, searched_product: @@searched, bought_product: @@purchased, count: 5)
+                Factory.create(:oos_substitution, searched_product: @@searched, bought_product: @@purchased, count: 5)
                 create_behaviors(searched_2, purchased_2, 3, 4)
-                Factory.create(:substitution, searched_product: searched_2, bought_product: purchased_2, count: 3)
+                Factory.create(:oos_substitution, searched_product: searched_2, bought_product: purchased_2, count: 3)
                 create_behaviors(searched_3, purchased_3, 6, 3)
-                Factory.create(:substitution, searched_product: searched_3, bought_product: purchased_3, count: 6)
+                Factory.create(:oos_substitution, searched_product: searched_3, bought_product: purchased_3, count: 6)
 
                 OOSSubstitutionProbability.generate_probabilities
                 substitution_probabilities = OOSSubstitutionProbability.find(:all)

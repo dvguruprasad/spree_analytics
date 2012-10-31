@@ -60,4 +60,8 @@ Spree::Product.class_eval do
     def category_taxon
         taxons.select {|t| t.taxonomy.name == CATEGORIES_TAXONOMY_NAME}
     end
+
+    def least_priced_variant
+        variants.sort {|x, y| x.price <=> y.price}.first
+    end
 end

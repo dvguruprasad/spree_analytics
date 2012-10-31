@@ -3,9 +3,11 @@ FactoryGirl.define do
         ignore do
             product 1
             is_available true
+            price 10
         end
         action "S"
-        parameters { "{\"product\": #{product}, \"available\": #{is_available} }"}
+        user_id 1
+        parameters { "{\"product\": #{product}, \"available\": #{is_available}, \"price\": #{price} }"}
     end
 
     factory :purchase_behavior ,:class => UserBehavior do
@@ -14,6 +16,7 @@ FactoryGirl.define do
             order 111
         end
         action "P"
+        user_id 1
         parameters { "{\"products\": #{products.inspect}, \"order\": #{order} }"}
     end
 
@@ -22,5 +25,6 @@ FactoryGirl.define do
             product 1
         end
         action "A"
+        user_id 1
     end
 end

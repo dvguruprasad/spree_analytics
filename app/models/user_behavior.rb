@@ -2,7 +2,8 @@ class UserBehavior < ActiveRecord::Base
     self.table_name = "spree_user_behaviors"
 
     def self.record_search(product, user, session_id)
-        create_behavior('S', "{\"product\": #{product.id}, \"available\": #{!product.out_of_stock?} }", user, session_id)
+        price = product.variants.empty? ? product.master.price : product.least_priced_variant.price
+        create_behavior('S', "{\"product\": #{product.id}, \"available\": #{!product.out_of_stock?}, \"price\":#{price}}", user, session_id)
     end
 
 
@@ -11,10 +12,11 @@ class UserBehavior < ActiveRecord::Base
     end
 
     def self.number_of_times_searched_and_out_of_stock(searched_product)
-      parameters = "{\"product\": #{searched_product}, \"available\": false }"
-      not_available_count = UserBehavior.find_all_by_action_and_parameters('S',parameters).count
+      parameters ="{\"product\": #{searched_product}, \"available\": false" 
+      not_available_count = UserBehavior.count(:all, :conditions => ["action = ? AND parameters LIKE ?", 'S', "#{parameters}%"])
       not_available_count
     end
+
     def self.record_add_to_cart(product_id, order_id, user, session_id)
         create_behavior('A',  "{\"product\": #{product_id}, \"order\": #{order_id}}", user, session_id)
     end
@@ -30,6 +32,11 @@ class UserBehavior < ActiveRecord::Base
     def searched_and_not_available?
         action == 'S' && !JSON.parse(parameters)["available"]
     end
+
+    def searched_and_available?
+        action == 'S' && JSON.parse(parameters)["available"]
+    end
+
     def purchase?
         action == 'P'
     end
@@ -40,6 +47,14 @@ class UserBehavior < ActiveRecord::Base
 
     def products
         JSON.parse(parameters)["products"]
+    end
+
+    def price
+        JSON.parse(parameters)["price"]
+    end
+
+    def order
+        JSON.parse(parameters)["order"]
     end
 
     private

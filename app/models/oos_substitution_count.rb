@@ -42,12 +42,6 @@ class OOSSubstitutionCount < SubstitutionCount
     searched_product.category_taxon == bought_product.category_taxon
   end
 
-  def self.substitution(searched_product, bought_product)
-    substitution = OOSSubstitutionCount.new
-    substitution.searched_product = searched_product
-    substitution.bought_product = bought_product
-    substitution
-  end
 
   def self.products_grouped_by_category(products)
     result = {}
