@@ -1,4 +1,4 @@
 SpreeAnalytics
 ==============
 
-Extending spree to include visualizations and some analytics components
+A Spree Extension that adds visualizations and some analytics components
