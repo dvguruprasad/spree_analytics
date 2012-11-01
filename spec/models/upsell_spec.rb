@@ -1,36 +1,36 @@
 require 'spec_helper'
 
-class UpsellSubstitutionCountSpec
-    describe "UpsellSubstitutionCount" do
+class UpsellSpec
+    describe "Upsell" do
         context ".identify_substitutions" do
             it "should return 0 substitutions when there is only one search behavior" do
                 behaviors = [create_search(product_price = 100)]
-                substitutions = UpsellSubstitutionCount.identify_substitutions(behaviors)
+                substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(0)
             end
 
             it "should return 0 substitutions if the only behavior is purchase" do
                 behaviors = [FactoryGirl.create(:purchase_behavior)]
-                substitutions = UpsellSubstitutionCount.identify_substitutions(behaviors)
+                substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(0)
             end
 
             it "should return 0 substitutions when there are multiple search behaviors" do
                 behaviors = [create_search(product_price = 100), create_search(product_price = 200)]
-                substitutions = UpsellSubstitutionCount.identify_substitutions(behaviors)
+                substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(0)
             end
 
             it "should return 0 substitutions when a product is searched for and purchased" do
                 behaviors = create_search_and_purchase(product_price = 100)
-                substitutions = UpsellSubstitutionCount.identify_substitutions(behaviors)
+                substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(0)
             end
 
             it "should return 0 substitution when a product is searched for and another with a lower cost bought" do
                 behaviors = [create_search(100)] + create_search_and_purchase(product_price = 50)
 
-                substitutions = UpsellSubstitutionCount.identify_substitutions(behaviors)
+                substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(0)
             end
 
@@ -40,7 +40,7 @@ class UpsellSubstitutionCountSpec
 
                 behaviors = [search_1] + search_and_purchase_2
 
-                substitutions = UpsellSubstitutionCount.identify_substitutions(behaviors)
+                substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(1)
                 substitutions.first.searched_product.should eql(search_1.product)
                 substitutions.first.bought_product.should eql(search_and_purchase_2.first.product)
@@ -54,7 +54,7 @@ class UpsellSubstitutionCountSpec
 
                 behaviors = [search_1, search_2] + search_and_purchase_3
 
-                substitutions = UpsellSubstitutionCount.identify_substitutions(behaviors)
+                substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(1)
                 substitutions.first.searched_product.should eql(search_2.product)
                 substitutions.first.bought_product.should eql(search_and_purchase_3.first.product)
@@ -69,7 +69,7 @@ class UpsellSubstitutionCountSpec
 
                 behaviors = [search_1, search_2] + search_and_purchase_3 + search_and_purchase_4
 
-                substitutions = UpsellSubstitutionCount.identify_substitutions(behaviors)
+                substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(1)
                 substitutions.first.searched_product.should eql(search_2.product)
                 substitutions.first.bought_product.should eql(search_and_purchase_3.first.product)
@@ -82,7 +82,7 @@ class UpsellSubstitutionCountSpec
 
                 behaviors = search_and_purchase_1 + search_and_purchase_2
 
-                substitutions = UpsellSubstitutionCount.identify_substitutions(behaviors)
+                substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(0)
             end
 

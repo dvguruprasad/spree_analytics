@@ -1,6 +1,6 @@
-class UpsellSubstitutionCount < SubstitutionCount
+class Upsell < Substitution
     def self.last_capture_timestamp
-        UpsellSubstitutionIdentificationTimestamp.read_and_update
+        UpsellIdentificationTimestamp.read_and_update
     end
 
     def self.identify_substitutions(behaviors)

@@ -1,6 +1,6 @@
 class OOSSubstitutionProbability < SubstitutionProbability
     def self.generate_probabilities
-        substitutions = OOSSubstitutionCount.find(:all)
+        substitutions = OOSSubstitution.find(:all)
         substitutions.each do |substitution|
             product_searched_and_out_of_stock = UserBehavior.number_of_times_searched_and_out_of_stock(substitution.searched_product)
             next if product_searched_and_out_of_stock == 0

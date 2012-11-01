@@ -1,4 +1,4 @@
-class OOSSubstitutionCount < SubstitutionCount
+class OOSSubstitution < Substitution
 
   def self.last_capture_timestamp
     OOSSubstitutionIdentificationTimestamp.read_and_update

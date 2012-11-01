@@ -17,21 +17,20 @@ class UserDecoratorSpec
 
             it "should not return any substitutions when the only behavior is search" do
                 create_search_behavior(product = @product_1.id, is_available = true, @user.id)
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eq 0
             end
 
             it "should not return any substitutions when the only behavior is search for a product that is out of stock" do
                 create_search_behavior(product = @product_1.id, is_available = false, @user.id)
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eq 0
             end
 
             it "should not return any substitutions when the only behavior is a purchase" do
-                substitutionCount = OOSSubstitutionCount.new
                 create_purchase_behavior(products = [@product_1.id], order = 111, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eq 0
             end
 
@@ -41,7 +40,7 @@ class UserDecoratorSpec
                 create_add_to_cart_behavior(product = @product_1.id, @user.id)
                 create_purchase_behavior(products = [@product_1.id], order = 111, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eql 0
             end
 
@@ -52,7 +51,7 @@ class UserDecoratorSpec
                 create_add_to_cart_behavior(product = product_3.id, @user.id)
                 create_purchase_behavior(products = [product_3.id], order = 111, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eql 1
                 assert_substitution(substitutions.first, @product_1, product_3, 1)
             end
@@ -67,7 +66,7 @@ class UserDecoratorSpec
                 create_purchase_behavior(products = [@product_2.id], order = 222, @user.id)
                 create_purchase_behavior(products = [product_4.id], order = 444, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eql 1
                 assert_substitution(substitutions.first, product_3, @product_2, 1)
             end
@@ -77,7 +76,7 @@ class UserDecoratorSpec
                 create_search_behavior(product = @product_2.id, is_available = true, @user.id)
                 create_purchase_behavior(products = [@product_2.id], order = 222, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eq 0
             end
 
@@ -87,7 +86,7 @@ class UserDecoratorSpec
                 create_search_behavior(product = @product_2.id, is_available = true, @user.id)
                 create_purchase_behavior(products = [@product_2.id], order = 222, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eq 1
                 assert_substitution(substitutions.first, @product_1, @product_2, 1)
             end
@@ -98,7 +97,7 @@ class UserDecoratorSpec
                 create_search_behavior(product = @product_2.id, is_available = true, @user.id)
                 create_purchase_behavior(products = [@product_2.id], order = 222, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eq 1
                 assert_substitution(substitutions.first, @product_1, @product_2, 1)
             end
@@ -111,7 +110,7 @@ class UserDecoratorSpec
                 create_purchase_behavior(products = [@product_3.id], order = 222, @user.id)
                 create_purchase_behavior(products = [@product_4.id], order = 333, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eq 2
                 assert_substitution(substitutions.first, @product_1, @product_3, 1)
                 assert_substitution(substitutions.last, @product_2, @product_4, 1)
@@ -124,7 +123,7 @@ class UserDecoratorSpec
                 create_search_behavior(product = @product_2.id, is_available = true, @user.id)
                 create_purchase_behavior(products = [@product_2.id, @product_3.id], order = 222, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eq 2
                 assert_substitution(substitutions.first, @product_1, @product_2, 1)
                 assert_substitution(substitutions.last, @product_1, @product_3, 1)
@@ -135,7 +134,7 @@ class UserDecoratorSpec
                 create_search_behavior(product = @product_1.id, is_available = true, @user.id)
                 create_purchase_behavior(products = [@product_1.id], order = 222, @user.id)
 
-                substitutions = @user.substitutions_since(epoch, OOSSubstitutionCount)
+                substitutions = @user.substitutions_since(epoch, OOSSubstitution)
                 substitutions.count.should eq 0
             end
         end

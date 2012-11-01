@@ -1,19 +1,19 @@
 namespace :s do
     namespace :oos do
         task :capture => :environment do
-            OOSSubstitutionCount.capture
+            OOSSubstitution.capture
         end
         task :generate_probabilities => :environment do
             OOSSubstitutionProbability.generate_probabilities
         end
 
         task :all => :environment do
-            OOSSubstitutionCount.capture
+            OOSSubstitution.capture
             OOSSubstitutionProbability.generate_probabilities
         end
 
         task :clear => :environment do
-            OOSSubstitutionCount.delete_all
+            OOSSubstitution.delete_all
             OOSSubstitutionProbability.delete_all
             OOSSubstitutionIdentificationTimestamp.delete_all
         end
@@ -23,21 +23,21 @@ namespace :s do
 
     namespace :upsell do
         task :capture => :environment do
-            UpsellSubstitutionCount.capture
+            Upsell.capture
         end
         task :generate_probabilities => :environment do
-            UpsellSubstitutionProbability.generate_probabilities
+            UpsellProbability.generate_probabilities
         end
 
         task :all => :environment do
-            UpsellSubstitutionCount.capture
-            UpsellSubstitutionProbability.generate_probabilities
+            Upsell.capture
+            UpsellProbability.generate_probabilities
         end
 
         task :clear => :environment do
-            UpsellSubstitutionCount.delete_all
-            UpsellSubstitutionProbability.delete_all
-            UpsellSubstitutionIdentificationTimestamp.delete_all
+            Upsell.delete_all
+            UpsellProbability.delete_all
+            UpsellIdentificationTimestamp.delete_all
         end
 
         task :gsp => :all

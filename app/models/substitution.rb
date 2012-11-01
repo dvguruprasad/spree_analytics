@@ -1,4 +1,4 @@
-class SubstitutionCount < ActiveRecord::Base
+class Substitution < ActiveRecord::Base
   self.table_name = "spree_substitution_counts"
 
   def self.capture
