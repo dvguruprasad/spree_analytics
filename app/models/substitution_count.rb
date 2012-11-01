@@ -7,7 +7,7 @@ class SubstitutionCount < ActiveRecord::Base
     all_users.each do |user|
       substitutions = user.substitutions_since(timestamp, self)
       substitutions.each do |substitution|
-        p "#{substitution.count} out of stock substitution found between: #{substitution.searched_product} and #{substitution.bought_product}"
+        p "#{substitution.count} #{self} found between: #{substitution.searched_product} and #{substitution.bought_product}"
         substitution = substitution.create_or_update_substitution
       end
     end

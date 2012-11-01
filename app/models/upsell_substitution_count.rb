@@ -9,19 +9,20 @@ class UpsellSubstitutionCount < SubstitutionCount
         behaviors.each do |behavior|
             if behavior.searched_and_available?
                 stack << behavior
-            elsif behavior.purchase? && !stack.empty?
-                bought_products = behavior.products
-                bought_products.each do |bought_product|
-                    if(is_an_upsell(stack.first, bought_product, behavior.order))
-                        substitutions[substitution(stack.first.product, bought_product)] += 1
+            elsif behavior.purchase?
+                stack.pop # assumption: last search was for the purchase
+                next if stack.empty?
+                behavior.products.each do |bought_product|
+                    if(is_an_upsell(stack.last, bought_product, behavior.order))
+                        substitutions[substitution(stack.last.product, bought_product)] += 1
+                        stack.clear
                     end
                 end
-                stack.pop
+
             end
         end
-        substitutions.map {|s, c| s.count = c; s}
+        return substitutions.collect {|s, c| s.count = c; s}
     end
-
 
     private
     def self.is_an_upsell(search_behavior, bought_product_id, order_id)
