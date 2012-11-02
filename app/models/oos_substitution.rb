@@ -37,16 +37,4 @@ class OOSSubstitution < Substitution
     bought_product = Spree::Product.find_by_id(bought)
     searched_product.category_taxon == bought_product.category_taxon
   end
-
-
-  def self.products_grouped_by_category(products)
-    result = {}
-    raise "NoProductsInPurchaseBehavior" if products.nil?
-    products.each do |p|
-      c = category(p)
-      result[c] ||= []
-      result[c] << p
-    end
-    result
-  end
 end

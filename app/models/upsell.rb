@@ -12,17 +12,18 @@ class Upsell < Substitution
                 stack[product_category] ||= []
                 stack[product_category] << behavior
             elsif behavior.purchase?
-                behavior.products.each do |bought_product|
-                    product_category = category(bought_product)
-                    stack[product_category] ||= []
-                    stack[product_category].pop # assumption: last search was for the purchase
-                    next if stack[product_category].empty?
-                    if(is_an_upsell(stack[product_category].last, bought_product, behavior.order))
-                        substitutions[substitution(stack[product_category].last.product, bought_product)] += 1
-                        stack[product_category].clear
+                products_by_category = products_grouped_by_category(behavior.products)
+                products_by_category.each do |category, products|
+                    stack[category] ||= []
+                    products.count.times { stack[category].pop }
+                    next if stack[category].empty?
+                    products.each do |bought_product|
+                        if(is_an_upsell(stack[category].last, bought_product, behavior.order))
+                            substitutions[substitution(stack[category].last.product, bought_product)] += 1
+                        end
                     end
+                    stack[category].clear
                 end
-
             end
         end
         return substitutions.collect {|s, c| s.count = c; s}

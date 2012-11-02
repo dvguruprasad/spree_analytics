@@ -24,6 +24,17 @@ class Substitution < ActiveRecord::Base
     Spree::Product.find_by_id(product_id).category_taxon
   end
 
+  def self.products_grouped_by_category(products)
+    result = {}
+    raise "NoProductsInPurchaseBehavior" if products.nil?
+    products.each do |p|
+      c = category(p)
+      result[c] ||= []
+      result[c] << p
+    end
+    result
+  end
+
   def create_or_update_substitution
     substitution = self.class.find_or_create_by_searched_product_and_bought_product(searched_product,bought_product)
     substitution.count=0 if substitution.count.nil?

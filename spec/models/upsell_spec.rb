@@ -87,6 +87,16 @@ class UpsellSpec
                 substitutions.count.should eql(0)
             end
 
+            it "should identify two upsells if two products of higher cost were purchased after a search" do
+                search_1 = create_search(100)
+                purchases = create_search_and_purchases([{product_price: 150, taxons: []}, {product_price: 250, taxons: []}])
+
+                behaviors = [search_1] + purchases
+
+                substitutions = Upsell.identify_substitutions(behaviors)
+                substitutions.count.should eql(2)
+            end
+
             context "when products belong to different categories" do
                 before(:each) do
                     categories_taxonomy = FactoryGirl.create(:taxonomy, :name => "Categories")
@@ -106,6 +116,30 @@ class UpsellSpec
                     upsells = Upsell.identify_substitutions(behaviors)
                     upsells.count.should eq(0)
                 end
+
+                it "should consider all products bought as part of the same order and belonging to the same category as the search as upsells" do
+                    search_1 = create_search(product_price = 100, taxons = [@clothing_taxon, @nike_brand])
+                    search_2 = create_search(product_price = 100, taxons = [@deoderant_taxon, @reebok_brand])
+                    purchases = create_search_and_purchases([{product_price: 150, taxons: [@clothing_taxon, @nike_brand]},
+                                                                        {product_price: 250, taxons: [@clothing_taxon, @nike_brand]},
+                                                                            {product_price: 250, taxons: [@deoderant_taxon, @nike_brand]}])
+
+                    behaviors = [search_1, search_2] + purchases
+
+                    upsells = Upsell.identify_substitutions(behaviors)
+                    upsells.count.should eq(3)
+                    upsells[0].searched_product.should eql(search_1.product)
+                    upsells[0].bought_product.should eql(purchases[3].products[0])
+                    upsells[0].count.should eql 1
+
+                    upsells[1].searched_product.should eql(search_1.product)
+                    upsells[1].bought_product.should eql(purchases[3].products[1])
+                    upsells[1].count.should eql 1
+
+                    upsells[2].searched_product.should eql(search_2.product)
+                    upsells[2].bought_product.should eql(purchases[3].products[2])
+                    upsells[2].count.should eql 1
+                end
             end
         end
 
@@ -123,6 +157,22 @@ class UpsellSpec
             order = line_items.first.order
             purchase = FactoryGirl.create(:purchase_behavior, order: order.id, products: [bought_product.id])
             [search, purchase]
+        end
+
+        def create_search_and_purchases(product_info)
+            order = FactoryGirl.create(:order)
+            behaviors = []
+            bought_products = []
+            product_info.each do |p|
+                bought_product = FactoryGirl.create(:product, taxons: p[:taxons])
+                bought_variant = FactoryGirl.create(:variant, price: p[:product_price], product: bought_product)
+                FactoryGirl.create(:line_item, price: p[:product_price], variant: bought_variant, order: order)
+
+                bought_products << bought_product.id
+                behaviors << FactoryGirl.create(:search_behavior, product: bought_product.id, price: p[:product_price])
+            end
+            behaviors << FactoryGirl.create(:purchase_behavior, order: order.id, products: bought_products)
+            behaviors
         end
     end
 end
