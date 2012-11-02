@@ -24,6 +24,7 @@ class SubstitutionProbability < ActiveRecord::Base
         generate_probabilities(UpsellProbability, Upsell)
     end
 
+    private
     def self.generate_probabilities(probability_kind, substitution_kind)
         substitutions = substitution_kind.find(:all)
         substitutions.each do |substitution|

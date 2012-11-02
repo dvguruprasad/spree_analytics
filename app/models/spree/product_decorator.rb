@@ -64,4 +64,8 @@ Spree::Product.class_eval do
     def least_priced_variant
         variants.sort {|x, y| x.price <=> y.price}.first
     end
+
+    def substitutes
+        out_of_stock? ? OOSSubstitutionProbability.find_substitutes_for(self) : UpsellProbability.find_upsells_for(self)
+    end
 end
