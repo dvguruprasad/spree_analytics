@@ -1,6 +1,11 @@
 <div class="cl"></div>
+
+<% if !@promotion.nil? || (!@substitutes.nil? && !@substitutes.empty?) %>
 <div class="subtitutes_block cf">
-<% if !@promotion.nil?%>
+
+  <div class="subs_block_headertxt">You might be interested in</div>
+   <div class="subs_bg cf">
+  <% if !@promotion.nil?%>
     <div class="subs_discount_wpr">
       <div class="subs_discount">
         <div class="subs_txt_discount">Discount</div>
@@ -16,7 +21,6 @@
 
 <% if !@substitutes.nil? && !@substitutes.empty? %>
    <div class="subtitutes_blockR">
-    <div class="subs_block_headertxt">You might be interested in</div>
     <div class="subs_wpr cf">
       <ul class="cf">
         <% @substitutes.each do |substitute|%>
@@ -31,4 +35,7 @@
     </div>
    </div>
 <% end%>
+   </div>
+<% end%>
+
 </div>
