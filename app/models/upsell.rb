@@ -5,17 +5,21 @@ class Upsell < Substitution
 
     def self.identify_substitutions(behaviors)
         substitutions = Hash.new(0)
-        stack = []
+        stack = {}
         behaviors.each do |behavior|
             if behavior.searched_and_available?
-                stack << behavior
+                product_category = category(behavior.product)
+                stack[product_category] ||= []
+                stack[product_category] << behavior
             elsif behavior.purchase?
-                stack.pop # assumption: last search was for the purchase
-                next if stack.empty?
                 behavior.products.each do |bought_product|
-                    if(is_an_upsell(stack.last, bought_product, behavior.order))
-                        substitutions[substitution(stack.last.product, bought_product)] += 1
-                        stack.clear
+                    product_category = category(bought_product)
+                    stack[product_category] ||= []
+                    stack[product_category].pop # assumption: last search was for the purchase
+                    next if stack[product_category].empty?
+                    if(is_an_upsell(stack[product_category].last, bought_product, behavior.order))
+                        substitutions[substitution(stack[product_category].last.product, bought_product)] += 1
+                        stack[product_category].clear
                     end
                 end
 
@@ -29,7 +33,8 @@ class Upsell < Substitution
         bought_product = Spree::Product.find(bought_product_id)
         order = Spree::Order.find(order_id)
         order.line_items.any? do |line_item|
-            line_item.variant.product == bought_product && line_item.price > search_behavior.price
+            product = line_item.variant.product
+            product == bought_product && category(search_behavior.product) == product.category_taxon && line_item.price > search_behavior.price
         end
     end
 

@@ -10,7 +10,8 @@ class UpsellSpec
             end
 
             it "should return 0 substitutions if the only behavior is purchase" do
-                behaviors = [FactoryGirl.create(:purchase_behavior)]
+                product = FactoryGirl.create(:simple_product)
+                behaviors = [FactoryGirl.create(:purchase_behavior, products: [product.id])]
                 substitutions = Upsell.identify_substitutions(behaviors)
                 substitutions.count.should eql(0)
             end
@@ -86,17 +87,37 @@ class UpsellSpec
                 substitutions.count.should eql(0)
             end
 
+            context "when products belong to different categories" do
+                before(:each) do
+                    categories_taxonomy = FactoryGirl.create(:taxonomy, :name => "Categories")
+                    brands_taxonomy = FactoryGirl.create(:taxonomy, :name => "Brands")
+                    @clothing_taxon = FactoryGirl.create(:taxon, :name => "Clothing", :taxonomy => categories_taxonomy)
+                    @deoderant_taxon = FactoryGirl.create(:taxon, :name => "Deoderant", :taxonomy => categories_taxonomy)
+                    @reebok_brand = FactoryGirl.create(:taxon, :name => "Reebok", :taxonomy => brands_taxonomy)
+                    @nike_brand = FactoryGirl.create(:taxon, :name => "Nike", :taxonomy => brands_taxonomy)
+                end
+
+                it "should not consider search for a product and purchase of another as upsell if they belong to different categories" do
+                    search_1 = create_search(product_price = 100, taxons = [@clothing_taxon, @nike_brand])
+                    search_and_purchase_2 = create_search_and_purchase(150, taxons = [@deoderant_taxon, @nike_brand])
+
+                    behaviors = [search_1] + search_and_purchase_2
+
+                    upsells = Upsell.identify_substitutions(behaviors)
+                    upsells.count.should eq(0)
+                end
+            end
         end
 
-        def create_search(product_price)
-            searched_variant = FactoryGirl.create(:variant, price: product_price)
-            searched_product = searched_variant.product
+        def create_search(product_price, taxons = [])
+            searched_product = FactoryGirl.create(:product, taxons: taxons)
+            searched_variant = FactoryGirl.create(:variant, price: product_price, product: searched_product)
             FactoryGirl.create(:search_behavior, product: searched_product.id, price: product_price)
         end
 
-        def create_search_and_purchase(product_price)
-            bought_variant = FactoryGirl.create(:variant, price: product_price)
-            bought_product = bought_variant.product
+        def create_search_and_purchase(product_price, taxons = [])
+            bought_product = FactoryGirl.create(:product, taxons: taxons)
+            bought_variant = FactoryGirl.create(:variant, price: product_price, product: bought_product)
             search = FactoryGirl.create(:search_behavior, product: bought_product.id, price: product_price)
             line_items = [FactoryGirl.create(:line_item, price: product_price, variant: bought_variant)]
             order = line_items.first.order

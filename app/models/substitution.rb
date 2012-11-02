@@ -20,6 +20,10 @@ class Substitution < ActiveRecord::Base
     substitution
   end
 
+  def self.category(product_id)
+    Spree::Product.find_by_id(product_id).category_taxon
+  end
+
   def create_or_update_substitution
     substitution = self.class.find_or_create_by_searched_product_and_bought_product(searched_product,bought_product)
     substitution.count=0 if substitution.count.nil?

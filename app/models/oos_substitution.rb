@@ -31,10 +31,6 @@ class OOSSubstitution < Substitution
   end
 
   private
-  def self.category(product_id)
-    Spree::Product.find_by_id(product_id).category_taxon
-  end
-
   def self.is_a_substitution(searched, bought)
     return false if searched == bought
     searched_product = Spree::Product.find_by_id(searched)
