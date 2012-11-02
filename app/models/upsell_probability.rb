@@ -1,4 +1,1 @@
-class UpsellProbability < SubstitutionProbability
-    def self.generate_probabilities
-    end
-end
+class UpsellProbability < SubstitutionProbability; end

@@ -11,8 +11,8 @@ class UserBehavior < ActiveRecord::Base
         create_behavior('P',  "{\"products\": #{product_ids.inspect}, \"order\": #{order_id}}", user, session_id)
     end
 
-    def self.number_of_times_searched_and_out_of_stock(searched_product)
-      parameters ="{\"product\": #{searched_product}, \"available\": false" 
+    def self.search_count(searched_product, is_available)
+      parameters ="{\"product\": #{searched_product}, \"available\": #{is_available}" 
       not_available_count = UserBehavior.count(:all, :conditions => ["action = ? AND parameters LIKE ?", 'S', "#{parameters}%"])
       not_available_count
     end

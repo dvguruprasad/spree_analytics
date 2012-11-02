@@ -9,7 +9,7 @@ class OOSSubstitutionProbabilitySpec
             it "should find substitution probability of a product given substitution count" do
                 create_behaviors(@@searched, @@purchased, 5, 2)
                 substitution = Factory.create(:oos_substitution, searched_product: @@searched, bought_product: @@purchased, count: 5)
-                OOSSubstitutionProbability.generate_probabilities
+                SubstitutionProbability.generate_for_oos_substitution
                 substitution_probabilities = OOSSubstitutionProbability.find(:all)
                 substitution_probabilities.count.should eql 1
                 substitution_probabilities.first.searched_product.should eql @@searched
@@ -28,7 +28,7 @@ class OOSSubstitutionProbabilitySpec
                 create_behaviors(searched_3, purchased_3, 6, 3)
                 Factory.create(:oos_substitution, searched_product: searched_3, bought_product: purchased_3, count: 6)
 
-                OOSSubstitutionProbability.generate_probabilities
+                SubstitutionProbability.generate_for_oos_substitution
                 substitution_probabilities = OOSSubstitutionProbability.find(:all)
                 substitution_probabilities.count eql 3
                 assert_probabilities(substitution_probabilities, @@searched, @@purchased, 0.7142857142857143)
