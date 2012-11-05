@@ -8,6 +8,18 @@
 }
 * html .cf{ zoom: 1; }
 *:first-child+html .cf{ zoom: 1; }
+#search-bar select#taxon{
+    height: 30px;
+    padding-bottom:5px;
+    padding-top:5px;
+
+}
+#search-bar select#taxon option{
+    padding-right:10px;
+}
+#search-bar input{
+    height:30px;
+}
 /***header section start***/
 
 
@@ -31,12 +43,19 @@
     margin-left:10px
 
 }
-
+#product-price .price{
+    color:#900;
+}
+.chart_sentiment{
+    width:285px;
+    height:200px;
+    margin:0px auto;
+}
 /***Substitute block***/
 .subtitutes_block{
     padding:10px 0px 20px 0px;
     margin-top:40px;
-    border-top:1px solid #eeeeee;
+    border-top:3px solid #DA7C0C;
 }
 .subs_discount_wpr{
     position:relative;
@@ -44,7 +63,7 @@
     padding:30px 80px 0px 0px;
 }
 .subs_bg{
-    border:1px solid #eeeeee;
+    border:3px solid #cecece;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -108,5 +127,23 @@
     border-bottom:none;
 }
 /***substitute block ends***/
+/*** Footer css start**/
+html,body{
+    height:100%;
+}
+.container{
+    min-height:100%;
+    position: relative;
+}
+#wrapper{
+    padding-bottom:80px;
+}
+#footer{
+    height: 60px;
+    position: absolute;
+    bottom: 0px;
+}
+
+/*** Footer css ends ***/
 
 

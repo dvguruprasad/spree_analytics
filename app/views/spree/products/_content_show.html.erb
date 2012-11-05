@@ -12,12 +12,8 @@
             <%= render :partial => 'thumbnails', :locals => { :product => @product } %>
           </div>
         </div>
-
-        <div data-hook="product_properties">
-          <%= render :partial => 'properties' %>
-        </div>
-
       </div>
+      <div id="brand_sentiment" class="chart_sentiment"></div>
     </div>
 
     <div class="columns seven omega" data-hook="product_right_part">
@@ -34,10 +30,12 @@
           <div id="cart-form" data-hook="cart_form">
             <%= render :partial => 'cart_form' %>
           </div>
-
+          <div data-hook="product_properties">
+            <%= render :partial => 'properties' %>
+          </div>
         </div>
 
-        <%= render :partial => 'taxons' %>
+        <!-- <%= render :partial => 'taxons' %>      -->
 
       </div>
     </div>

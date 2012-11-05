@@ -1,4 +1,4 @@
 //= require admin/spree_core
-//= require admin/highcharts
-//= require admin/exporting
+//= require highcharts
+//= require exporting
 //= require admin/customer_report
