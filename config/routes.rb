@@ -1,4 +1,6 @@
 Spree::Core::Engine.routes.draw do
+  get "sentiment", :to => "sentiment#show"
+
   # Add your extension routes here
   get "/rfm", :to => "rfm#index"
   match "monetary_customer_distribution" =>  "rfm#monetary_customer_distribution"
