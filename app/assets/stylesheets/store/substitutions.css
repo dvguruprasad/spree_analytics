@@ -8,6 +8,8 @@
 }
 * html .cf{ zoom: 1; }
 *:first-child+html .cf{ zoom: 1; }
+
+/***header section start***/
 #search-bar select#taxon{
     height: 30px;
     padding-bottom:5px;
@@ -20,11 +22,6 @@
 #search-bar input{
     height:30px;
 }
-/***header section start***/
-
-
-
-
 /***header section ends***/
 
 
@@ -141,6 +138,39 @@
     border-bottom:none;
 }
 /***substitute block ends***/
+/***tag cloud css start***/
+ .brand_sentiment_page{
+     width:960px;
+     margin:0px auto;
+     padding-top:20px;
+ }
+ .tagcloud{
+     margin-top:100px;
+     width:100%;
+     position:relative;
+ }
+.tagcloud ul{
+    margin:0px;
+    padding:0px;
+}
+ .tagcloud ul li{
+     float :left;
+     margin-right:14px;
+ }
+ .tagcloud ul li a{
+     padding:13px 17px;
+     float:left;
+ }
+.tagcloud ul li a:hover{
+    color:#000000 !important;
+    background:#cecece;
+    border-radius:5px;
+}
+.tag1{color:#6e9215 ; }
+.tag2{ color:#ef5308; }
+.tag3{ color:#a1997f; }
+/***tag cloud css end***/
+
 /*** Footer css start**/
 html,body{
     height:100%;
