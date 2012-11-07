@@ -15,14 +15,15 @@ Spree::ProductsController.class_eval do
             end
         end
 
-        @substitutes = @product.substitutes
-        if !@substitutes.empty? && @substitutes.first[:probability] > Spree::Config.probability_threshold_for_discounts && current_user_is_loyal?
-            @promotion = {}
-            @promotion[:product] = @substitutes.first[:product]
-            @promotion[:discount] = 10
-            @substitutes.shift
+        if @product.substitutions_enabled?
+            @substitutes = @product.substitutes
+            if !@substitutes.empty? && @substitutes.first[:probability] > Spree::Config.probability_threshold_for_discounts && current_user_is_loyal?
+                @promotion = {}
+                @promotion[:product] = @substitutes.first[:product]
+                @promotion[:discount] = 10
+                @substitutes.shift
+            end
         end
-
         respond_with(@product)
     end
 

@@ -68,4 +68,12 @@ Spree::Product.class_eval do
     def substitutes
         out_of_stock? ? OOSSubstitutionProbability.find_substitutes_for(self) : UpsellProbability.find_upsells_for(self)
     end
+
+    def substitutions_enabed?
+        taxons.any? {|t| t.substitutions_enabled?}
+    end
+
+    def recommendations_enabed?
+        taxons.any? {|t| t.recommendations_enabled?}
+    end
 end
