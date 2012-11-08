@@ -5,7 +5,6 @@
  * Time: 11:50 AM
  * To change this template use File | Settings | File Templates.
  */
-
 $(function () {
     var mainlist=new Array();
     var brand_s='puma';
@@ -109,5 +108,7 @@ $(function () {
         RenderPieChart('container', datalist);
 
     }
-
+    $( "#accordion" ).accordion({
+        header: "h3"
+    });
 });
