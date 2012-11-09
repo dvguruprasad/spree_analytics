@@ -1,4 +1,5 @@
 function load_sentiment_pie (sentiment) {
+  $('#accordion').removeClass('hide');
   if(typeof Highcharts != "undefined") {
     RenderPieChart('container',  sentiment[0] );
   }
