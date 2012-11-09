@@ -3,12 +3,6 @@
 
 
     function RenderTagCloud(sentiment_tags){
-        //$.ajax({
-            //url: '/ws/score/puma',
-            //type:'GET',
-            //dataType: 'json',
-            //async: false,
-            //success: function(data){  //alert(data.tags);
                 $("<ul class='cf'>").attr("id", "tagList").appendTo("#tagcloud");
                 $.each(sentiment_tags, function(i, val) {     //alert(val.name);
                     var li = $("<li>");
@@ -19,6 +13,3 @@
                     li.appendTo("#tagList");
                 });
             }
-        //});
-
-

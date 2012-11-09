@@ -2,3 +2,4 @@
 //= require highcharts
 //= require exporting
 //= require admin/customer_report
+

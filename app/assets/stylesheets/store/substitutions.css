@@ -12,6 +12,33 @@
     display:none;
 }
 /***header section start***/
+.header_wrapper{
+    background:#000000;
+    margin-bottom:20px;
+}
+.header_wrapper nav #main-nav-bar{
+    border-bottom:none;
+}
+.header_wrapper header{
+    width:960px;
+    margin:0px auto;
+}
+.header_wrapper figure{
+    width:200px;
+    float:left;
+}
+.header_wpapper nav#top-nav-bar{
+    float:left;
+    width:760px;
+}
+.header_wpapper nav#top-nav-bar:after{
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
+    zoom:1;
+}
 #search-bar select#taxon{
     height: 30px;
     padding-bottom:5px;
@@ -25,8 +52,13 @@
     height:30px;
 }
 /***header section ends***/
+/*** content block css start***/
+ #content{
+     padding-top:22px;
+ }
 
-
+/** content block css end  ***/
+/**product page css start**/
 .product_content_left{
     float:left;
 }
@@ -53,17 +85,7 @@
 .brand_sentiment_wrapper{
     position:  relative;
 }
-#brand_knowmore{
-    padding:5px;
-    background:
-}
-#brand_knowmore a{
-    position:absolute;
-    top:88px;
-    left:10px;
-    font-weight:bold;
-    color: #DA7C0C;
-}
+
 /***Substitute block***/
 .subtitutes_block{
     padding:10px 0px 20px 0px;
@@ -175,24 +197,25 @@
 .tag2{ color:#ef5308;font-size:1.5em; }
 .tag3{ color:#a1997f; font-size:1em;}
 /***tag cloud css end***/
+/*** product page css ends***/
 
 /*** Footer css start**/
 html,body{
     height:100%;
 }
 .container{
-    min-height:100%;
-    position: relative;
+    height:100%;
+    margin-bottom:-100px !important;
 }
-#wrapper{
-    padding-bottom:80px;
+.footer_wrapper{
+    background:#000000;
+    height:100px;
 }
-#footer{
-    height: 60px;
-    position: absolute;
-    bottom: 0px;
+.footer_wrapper footer#footer{
+    width:960px;
+    margin:0px auto;
+    border-top:1px solid #000000;
 }
-
 /*** Footer css ends ***/
 /** ui accordian css start**/
 .ui-widget {
