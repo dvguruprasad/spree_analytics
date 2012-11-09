@@ -70,7 +70,11 @@ Spree::Product.class_eval do
     end
 
     def substitutions_enabled?
-        taxons.any? {|t| t.substitutions_enabled?}
+        if !taxons.empty?
+          taxons.any? {|t| t.substitutions_enabled?}
+        else
+          true
+        end
     end
 
     def recommendations_enabled?

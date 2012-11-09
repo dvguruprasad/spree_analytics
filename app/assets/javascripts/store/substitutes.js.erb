@@ -5,10 +5,9 @@
  * Time: 11:50 AM
  * To change this template use File | Settings | File Templates.
  */
-$(function () {
-    var mainlist=new Array();
+function load_sentiment_pie (sentiment) {
     var brand_s='puma';
-    $.ajax({
+    /*$.ajax({
         url: '/ws/score/'+brand_s,
         type:'GET',
         dataType: 'json',
@@ -37,7 +36,7 @@ $(function () {
             count=0;
              //alert(mainlist);
         }
-    });
+    });*/
 
 //         var datalist=[
 //            ['Nutral',70.8],
@@ -47,7 +46,6 @@ $(function () {
     if(typeof Highcharts != "undefined") {
 
         var chart;
-        var datalist=mainlist;
 
         function RenderPieChart(elementId, dataList){
             chart = new Highcharts.Chart({
@@ -101,14 +99,15 @@ $(function () {
             },
             series: [{
                 type: 'pie',
-                data: datalist
+                data: dataList
             }]
         });
-    }
-        RenderPieChart('container', datalist);
-
+        }
+      <%#sentiment = new Array($('meta[name=sentiment]').attr('content'));%>
+        alert(sentiment);
+    RenderPieChart('container',  sentiment[0] );
     }
     $( "#accordion" ).accordion({
         header: "h3"
     });
-});
+}

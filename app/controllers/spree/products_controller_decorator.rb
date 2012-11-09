@@ -24,7 +24,17 @@ Spree::ProductsController.class_eval do
                 @substitutes.shift
             end
         end
-        respond_with(@product)
+        
+        @sentiment = ProductSentiment.sentiment("nike")
+        @sentiment_tags = ProductSentiment.tags("nike")
+        @passion = ProductSentiment.passion("nike")
+        @reach = ProductSentiment.reach("nike")
+        respond_to do |format|
+          format.js
+          format.html
+        end
+        @product
+        #respond_with(@product)
     end
 
 

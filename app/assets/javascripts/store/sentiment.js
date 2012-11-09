@@ -2,17 +2,15 @@
 // All this logic will automatically be available in application.js.
 
 
-$(function(){
-    RenderTagCloud();
-    function RenderTagCloud(){
-        $.ajax({
-            url: '/ws/score/puma',
-            type:'GET',
-            dataType: 'json',
-            async: false,
-            success: function(data){  //alert(data.tags);
+    function RenderTagCloud(sentiment_tags){
+        //$.ajax({
+            //url: '/ws/score/puma',
+            //type:'GET',
+            //dataType: 'json',
+            //async: false,
+            //success: function(data){  //alert(data.tags);
                 $("<ul class='cf'>").attr("id", "tagList").appendTo("#tagcloud");
-                $.each(data.tags, function(i, val) {     //alert(val.name);
+                $.each(sentiment_tags, function(i, val) {     //alert(val.name);
                     var li = $("<li>");
                     //create link
                     $("<a>").text(val.name).attr({title:"See all tweets tagged with " + val.name, href:"#" + val.name + ".html"}).appendTo(li);
@@ -21,10 +19,6 @@ $(function(){
                     li.appendTo("#tagList");
                 });
             }
-        });
+        //});
 
 
-    }
-
-
-})

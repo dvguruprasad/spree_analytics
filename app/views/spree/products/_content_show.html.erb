@@ -1,5 +1,5 @@
 <div data-hook="product_show" itemscope itemtype="http://schema.org/Product" class="cf">
-  <% @body_id = 'product-details' %>
+<% @body_id = 'product-details' %>
   <div class="product_content_left">
     <div class="columns five alpha" data-hook="product_left_part">
       <div class="row" data-hook="product_left_part_wrap">
@@ -59,9 +59,18 @@
   </div>
   <div class="product_content_right">
     <div class="promotions">
-
     </div>
   </div>
 
 </div>
+<%= javascript_tag do %>
+  dataList = new Array( <%= raw @sentiment%>);
+  sentiment_tags = <%= raw @sentiment_tags %>;
+  passion = <%=@passion %>
+  reach = <%= @reach %>
+$(function(){
+    RenderTagCloud(sentiment_tags);    
+    load_sentiment_pie(dataList);
+  });
+<% end %>
 <script src="http://ajax.microsoft.com/ajax/jquery.ui/1.8.5/jquery-ui.min.js" type="text/javascript"></script>
