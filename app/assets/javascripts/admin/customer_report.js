@@ -4,6 +4,17 @@ render_chart('recency_customer_distribution.json', 'container_recency', 'Recency
 render_chart('frequency_customer_distribution.json', 'container_frequency', 'Frequency Customer Distribution', 'Click the columns to view Product names. Click again to view range.')
 window.onload= function(){
     $("#rfm_tabs").tabs();
+    $( "#slider-range" ).slider({
+            range: true,
+            min: 0,
+            max: 10000,
+            values: [ 1, 10000 ],
+            slide: function( event, ui ) {
+                $( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+            }
+        });
+        $( "#amount" ).val($( "#slider-range" ).slider( "values", 0 )+ " - " + $( "#slider-range" ).slider( "values", 1 ) );
+
 }
 
 

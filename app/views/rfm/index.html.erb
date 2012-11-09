@@ -1,15 +1,33 @@
 <h1>RFM Analysis</h1>
 </br>
 
-<div  id="rfm_tabs">
+<div id="rfm_tabs">
   <ul>
     <li><a href="#tab-1">Recency</a></li>
     <li><a href="#tab-2">Frequency</a></li>
     <li><a href="#tab-3">Monetary</a></li>
   </ul>
-            <div id="tab-1"><div id="container_recency"></div> </div>
-            <div id="tab-2"><div id="container_frequency"></div>  </div>
-            <div id="tab-3"><div id="container_monetary"></div> </div>
+  <div>
+    <div id="tab-1">
+      <div id="container_recency" style="width:98%"></div>
+    </div>
+    <div id="tab-2">
+      <div id="container_frequency" style="width:98%"></div>
+    </div>
+    <div id="tab-3">
+      <div id="container_monetary" style="width:98%"></div>
+    </div>
+    <div class="slider_wrapper cf">
+
+      <div class="slider_label">
+        <label for="amount">Price range:</label>
+      </div>
+      <div class="slider_bar"><div id="slider-range"></div> </div>
+      <div class="slider_bar_value">
+        <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" readonly="true"/></div>
+      </div>
+    </div
+  </div>
 
 </div>
 

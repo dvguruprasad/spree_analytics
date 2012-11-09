@@ -68,9 +68,6 @@
     float:left;
     min-height: 250px;
     width: 226px;
-    border-top: 1px solid #cecece;
-    border-right: 1px solid #cecece;
-    border-left: 1px solid #cecece;
     margin-left:10px
 
 }
@@ -193,9 +190,9 @@
     background:#cecece;
     border-radius:5px;
 }
-.tag1{color:#6e9215 ;font-size:2em; }
-.tag2{ color:#ef5308;font-size:1.5em; }
-.tag3{ color:#a1997f; font-size:1em;}
+.tag1{color:#6e9215 !important;font-size:2em; }
+.tag2{ color:#ef5308 !important;font-size:1.5em; }
+.tag3{ color:#a1997f !important; font-size:1em;}
 /***tag cloud css end***/
 /*** product page css ends***/
 
@@ -218,6 +215,9 @@ html,body{
 }
 /*** Footer css ends ***/
 /** ui accordian css start**/
+#accordion h3{
+    padding-left:2.2em ;
+}
 .ui-widget {
     font-family:Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
     font-size:1.1em;
@@ -274,5 +274,25 @@ html,body{
 
 
 /** ui accordion css end***/
+/*** ui rfm slider  **/
+.slider_wrapper{
+   width:750px;
+    margin:0px auto;
+}
+.slider_label{
+    float:left;
+    padding:0px 30px 0px 0px;
+}
+.slider_bar{
+    float:left;
+    padding-top:5px;
+    width:500px;
+}
+.slider_bar_value{
+   float:left;
+    width:100px;
+    padding:0px 0px 0px 30px;
+}
 
+/*** ui rfm slider ends */
 
