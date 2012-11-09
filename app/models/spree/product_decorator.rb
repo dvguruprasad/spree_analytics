@@ -52,6 +52,7 @@ end
 
 Spree::Product.class_eval do
     CATEGORIES_TAXONOMY_NAME = "Categories"
+    BRAND_TAXONOMY_NAME = "Brand"
 
     def out_of_stock?
         variants.empty? ? count_on_hand == 0 : variants.all?{|v| v.count_on_hand == 0}
@@ -59,6 +60,11 @@ Spree::Product.class_eval do
 
     def category_taxon
         taxons.select {|t| t.taxonomy.name == CATEGORIES_TAXONOMY_NAME}
+    end
+
+    def brand
+        product_taxon = taxons.select {|t| t.taxonomy.name == BRAND_TAXONOMY_NAME}
+        product_taxon.first.name
     end
 
     def least_priced_variant
