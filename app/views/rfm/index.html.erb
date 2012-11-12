@@ -11,6 +11,19 @@
   <div>
     <div id="tab-1">
       <div id="container_recency" style="width:98%"></div>
+      <div class="rfm_block cf">
+        <div class="date_range">
+            <span class="rfm_label">Date Range: </span>
+            <label for="rfm_from">From</label>
+            <input type="text" id="rfm_from" name="rfm_from" />
+            <label for="rfm_to">to</label>
+            <input type="text" id="rfm_to" name="rfm_to" />
+      </div>
+      </div>
+      <div class="rfm_block cf">
+        <span class="rfm_label">Bucket Size:</span>
+        <div class="price_bs"><a href="#">Monthly</a><a href="#">Quaterly</a><a href="#">Half Yearly</a><a href="#">Yearly</a></div>
+      </div>
     </div>
     <div id="tab-2">
       <div id="container_frequency" style="width:98%"></div>
@@ -35,7 +48,7 @@
           <div class="slider_bar_value"><input type="text" id="price_r" readonly="true"/></div>
         </div>
         <div class="rfm_block cf">
-          <span class="rfm_label">Bucket Size:</span>
+          <span class="rfm_label">Time Interval:</span>
           <div class="price_bs"><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a></div>
         </div>
       </div>

@@ -275,9 +275,10 @@ html,body{
 
 /** ui accordion css end***/
 /*** ui rfm slider  **/
+
 #rfm_body{
     background:#000000;
-    padding-top:50px;
+    padding-top:80px;
     height:100%;
 }
 #rfm_body h1{

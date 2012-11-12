@@ -36,9 +36,23 @@ window.onload= function(){
         $(".price_bs a").removeClass("bucket_selected");
         $(this).addClass("bucket_selected");
     })
+    $( "#rfm_from" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        onClose: function( selectedDate ) {
+            $( "#to" ).datepicker( "option", "minDate", selectedDate );
+        }
+    });
+    $( "#rfm_to" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        onClose: function( selectedDate ) {
+            $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+        }
+    });
 
 }
-$(document).ready(function(){alert('inside');})
+//$(document).ready(function(){alert('inside');})
 function render_chart(url, container, title, subtitle){
     var chart;
     $.get(url, function(response) {
