@@ -1,3 +1,4 @@
+<div id="rfm_body">
 <h1>RFM Analysis</h1>
 </br>
 
@@ -13,21 +14,36 @@
     </div>
     <div id="tab-2">
       <div id="container_frequency" style="width:98%"></div>
+      <div class="slider_wrapper_freq cf">
+        <div class="rfm_block cf">
+            <div class="slider_label rfm_label"><label for="freq_r"> Interval:</label></div>
+            <div class="slider_bar"><div id="slider-range-freq"></div> </div>
+            <div class="slider_bar_value"><input type="text" id="freq_r" readonly="true"/></div>
+       </div>
+        <div class="rfm_block cf">
+          <span class="rfm_label">Bucket Size:</span>
+          <div class="freq_bs"><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a></div>
+        </div>
+      </div>
     </div>
     <div id="tab-3">
       <div id="container_monetary" style="width:98%"></div>
+      <div class="slider_wrapper_freq cf">
+        <div class="rfm_block cf">
+          <div class="slider_label rfm_label"><label for="price_r"> Interval:</label></div>
+          <div class="slider_bar"><div id="slider-range-price"></div> </div>
+          <div class="slider_bar_value"><input type="text" id="price_r" readonly="true"/></div>
+        </div>
+        <div class="rfm_block cf">
+          <span class="rfm_label">Bucket Size:</span>
+          <div class="price_bs"><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a></div>
+        </div>
+      </div>
     </div>
-    <div class="slider_wrapper cf">
 
-      <div class="slider_label">
-        <label for="amount">Price range:</label>
-      </div>
-      <div class="slider_bar"><div id="slider-range"></div> </div>
-      <div class="slider_bar_value">
-        <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" readonly="true"/></div>
-      </div>
     </div
   </div>
 
+</div>
 </div>
 

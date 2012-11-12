@@ -275,13 +275,31 @@ html,body{
 
 /** ui accordion css end***/
 /*** ui rfm slider  **/
-.slider_wrapper{
-   width:750px;
-    margin:0px auto;
+#rfm_body{
+    background:#000000;
+    padding-top:50px;
+    height:100%;
+}
+#rfm_body h1{
+    text-align: center;
+    color:#ffffff;
+}
+#rfm_tabs{
+    margin-top:20px;
+}
+.slider_wrapper_freq{
+   width:780px;
+    margin:20px auto;
 }
 .slider_label{
     float:left;
     padding:0px 30px 0px 0px;
+}
+.rfm_label{
+    padding-right:30px;
+    text-align: right;
+    width:100px;
+    float:left;
 }
 .slider_bar{
     float:left;
@@ -292,6 +310,49 @@ html,body{
    float:left;
     width:100px;
     padding:0px 0px 0px 30px;
+}
+.rfm_block{
+    padding:20px 0px;
+}
+#freq_r,#price_r{
+    background:transparent;
+    color: #9C5419 !important;
+    cursor:pointer;
+    border:none;
+    font-weight: bold;
+}
+#bucket_val{
+    width:30px;
+}
+.freq_bs,.price_bs{float:left;}
+.freq_bs a,.price_bs a{
+    background: #3093c7;
+    background: -webkit-gradient(linear, left top, left bottom, from(#3093c7), to(#1c5a85));
+    background: -moz-linear-gradient(top,  #3093c7,  #1c5a85);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#3093c7', endColorstr='#1c5a85');
+    color:#ffffff;
+    padding:4px 15px;
+    margin-right:20px;
+    border-radius:50px;
+    border:1px solid #fff;
+    -moz-box-shadow: 5px 5px 5px #888;
+    -webkit-box-shadow: 5px 5px 5px #888;
+    box-shadow: 5px 5px 5px #888;
+}
+.freq_bs a:hover,.price_bs a:hover,a.bucket_selected{
+    background: #26759e;
+    background: -webkit-gradient(linear, left top, left bottom, from(#26759e), to(#133d5b));
+    background: -moz-linear-gradient(top,  #26759e,  #133d5b);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#26759e', endColorstr='#133d5b');    color:#ffffff !important;
+ }
+#slider-range-freq,#slider-range-price{
+    background: grey;
+}
+#slider-range-freq a,#slider-range-price a{
+    background:#000000 !important;
+}
+#slider-range-freq .ui-slider-range,#slider-range-price .ui-slider-range{
+    background:#3093c7;
 }
 
 /*** ui rfm slider ends */

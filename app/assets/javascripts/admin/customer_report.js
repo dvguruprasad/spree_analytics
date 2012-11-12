@@ -4,20 +4,41 @@ render_chart('recency_customer_distribution.json', 'container_recency', 'Recency
 render_chart('frequency_customer_distribution.json', 'container_frequency', 'Frequency Customer Distribution', 'Click the columns to view Product names. Click again to view range.')
 window.onload= function(){
     $("#rfm_tabs").tabs();
-    $( "#slider-range" ).slider({
+    $( "#slider-range-freq" ).slider({
             range: true,
             min: 0,
             max: 10000,
             values: [ 1, 10000 ],
             slide: function( event, ui ) {
-                $( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                if(ui.values[ 0 ] == ui.values[1]){return false;}
+                else{
+                    $( "#freq_r" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                }
             }
         });
-        $( "#amount" ).val($( "#slider-range" ).slider( "values", 0 )+ " - " + $( "#slider-range" ).slider( "values", 1 ) );
+    $( "#slider-range-price" ).slider({
+        range: true,
+        min: 0,
+        max: 10000,
+        values: [ 1, 10000 ],
+        slide: function( event, ui ) {
+            if(ui.values[ 0 ] == ui.values[1]){return false;}
+            else{
+                $( "#price_r" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+            }
+        }
+    });
+    $(".freq_bs a").click(function(){
+        $(".freq_bs a").removeClass("bucket_selected");
+        $(this).addClass("bucket_selected");
+    })
+    $(".price_bs a").click(function(){
+        $(".price_bs a").removeClass("bucket_selected");
+        $(this).addClass("bucket_selected");
+    })
 
 }
-
-
+$(document).ready(function(){alert('inside');})
 function render_chart(url, container, title, subtitle){
     var chart;
     $.get(url, function(response) {
