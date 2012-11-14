@@ -24,16 +24,11 @@ Spree::ProductsController.class_eval do
         @substitutes.shift
       end
     end
-    brand = @product.brand.downcase if self.BRANDS_LIST.include? @product.brand.downcase
-    @sentiment_available = false
 
-    if !brand.nil?
-      @sentiment_available = true
-      @sentiment = ProductSentiment.sentiment(brand)
-      @sentiment_tags = ProductSentiment.tags(brand)
-      @passion = ProductSentiment.passion(brand)
-      @reach = ProductSentiment.reach(brand)
+    if @product.brand_taxon.sentiment_analysis_enabled?
+        @sentiment = BrandSentiment.create(@product.brand_taxon.name)
     end
+
     respond_to do |format|
       format.js
       format.html
@@ -42,13 +37,7 @@ Spree::ProductsController.class_eval do
     #respond_with(@product)
   end
 
-  def BRANDS_LIST 
-    ["nike","reebok","adidas","puma"]
-  end
-
-
   private
-
   def record_search_behavior
     UserBehavior.record_search(@product, spree_current_user, session["session_id"]) unless spree_current_user.nil?
   end

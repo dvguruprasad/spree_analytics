@@ -63,13 +63,13 @@
   </div>
 
 </div>
-<% if @sentiment_available %>
+<% if @sentiment %>
 <%= javascript_tag do %>
-  dataList = new Array( <%= raw @sentiment%>);
+  dataList = new Array( <%= raw @sentiment.scores%>);
 
-  sentiment_tags = <%= raw @sentiment_tags %>;
-  passion = <%=@passion %>;
-reach = <%= @reach %>;
+  sentiment_tags = <%= raw @sentiment.tags %>;
+  passion = <%=@sentiment.passion %>;
+  reach = <%= @sentiment.reach %>;
 
 $(function(){
     RenderTagCloud(sentiment_tags);    

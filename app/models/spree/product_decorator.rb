@@ -62,9 +62,8 @@ Spree::Product.class_eval do
         taxons.select {|t| t.taxonomy.name == CATEGORIES_TAXONOMY_NAME}
     end
 
-    def brand
-        product_taxon = taxons.select {|t| t.taxonomy.name == BRAND_TAXONOMY_NAME}
-        product_taxon.first.name
+    def brand_taxon
+        taxons.select {|t| t.taxonomy.name == BRAND_TAXONOMY_NAME}.first
     end
 
     def least_priced_variant
