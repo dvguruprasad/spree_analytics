@@ -1,4 +1,4 @@
-Spree::Core::Engine.routes.draw do
+Rails.application.routes.draw do
   get "sentiment", :to => "sentiment#show"
 
   # Add your extension routes here
