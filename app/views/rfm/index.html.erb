@@ -1,58 +1,94 @@
 <div id="rfm_body">
-<h1>RFM Analysis</h1>
-</br>
+  <h1>RFM Analysis</h1>
+  </br>
 
-<div id="rfm_tabs">
-  <ul>
-    <li><a href="#tab-1">Recency</a></li>
-    <li><a href="#tab-2">Frequency</a></li>
-    <li><a href="#tab-3">Monetary</a></li>
-  </ul>
-  <div>
-    <div id="tab-1">
-      <div id="container_recency" style="width:98%"></div>
-      <div class="rfm_block cf">
-        <div class="date_range">
-            <span class="rfm_label">Date Range: </span>
-            <label for="rfm_from">From</label>
-            <input type="text" id="rfm_from" name="rfm_from" />
-            <label for="rfm_to">to</label>
-            <input type="text" id="rfm_to" name="rfm_to" />
-      </div>
-      </div>
-      <div class="rfm_block cf">
-        <span class="rfm_label">Bucket Size:</span>
-        <div class="price_bs"><a href="#">Monthly</a><a href="#">Quaterly</a><a href="#">Half Yearly</a><a href="#">Yearly</a></div>
-      </div>
-    </div>
-    <div id="tab-2">
-      <div id="container_frequency" style="width:98%"></div>
-      <div class="slider_wrapper_freq cf">
+  <div id="rfm_tabs">
+    <ul>
+      <li><a href="#tab-1">Recency</a></li>
+      <li><a href="#tab-2">Frequency</a></li>
+      <li><a href="#tab-3">Monetary</a></li>
+    </ul>
+    <div>
+
+      <div id="tab-1">
+        <div id="container_recency" style="width:98%"></div>
         <div class="rfm_block cf">
+          <div class="date_range">
+          </div>
+        </div>
+        <div class="rfm_block cf">
+          <span class="rfm_label">Bucket Size:</span>
+          <div id="time_bs">
+            <input type="radio" id="weekly" name="time_bs" value="weekly" checked="checked" /><label for="weekly">Weekely</label>
+            <input type="radio" id="monthly" name="time_bs" value="monthly" /><label for="monthly">Monthly</label>
+            <input type="radio" id="quarterly" name="time_bs" value="quarterly"/><label for="quarterly">Quarterly</label>
+            <input type="radio" id="half_yearly" name="time_bs" value="half_yearly" /><label for="half_yearly">Half Yearly</label>
+          </div>
+          <span class="rfm_label">Number Of Buckets</span>
+
+          <div id="weekly_buckets" class="buckets">
+              <input type="radio" id="w_n_o_b1" name="weekly_number_of_buckets" value=3 checked="checked"/><label for ="w_n_o_b1">3</label>
+              <input type="radio" id="w_n_o_b2" name="weekly_number_of_buckets" value=6/><label for ="w_n_o_b2">6</label>
+              <input type="radio" id="w_n_o_b3" name="weekly_number_of_buckets" value=9/><label for ="w_n_o_b3">9</label>
+              <input type="radio" id="w_n_o_b4" name="weekly_number_of_buckets" value=12/><label for ="w_n_o_b4">12</label>
+          </div>
+          <div id="monthly_buckets" class="buckets hide">
+              <input type="radio" id="m_n_o_b1" name="monthly_number_of_buckets" value=3 checked="checked"/><label for ="m_n_o_b1">3</label>
+              <input type="radio" id="m_n_o_b2" name="monthly_number_of_buckets" value=6/><label for ="m_n_o_b2">6</label>
+              <input type="radio" id="m_n_o_b3" name="monthly_number_of_buckets" value=9/><label for ="m_n_o_b3">9</label>
+          </div>
+          <div id="quarterly_buckets" class="buckets hide">
+              <input type="radio" id="q_n_o_b1" name="quarterly_number_of_buckets" value=4 checked="checked"/><label for ="q_n_o_b1">4</label>
+          </div>
+          <div id="half_yearly_buckets" class="buckets hide">
+              <input type="radio" id="hy_n_o_b1" name="half_yearly_number_of_buckets" value=2 checked="checked"/><label for ="hy_n_o_b1">2</label>
+          </div>
+        </div>
+          <div id="recency_submit" class="filter_submit"><a href="#">Submit</a></div>
+        </div>
+      </div>
+
+      <div id="tab-2">
+        <div id="container_frequency" style="width:98%"></div>
+        <div class="slider_wrapper_freq cf">
+          <div class="rfm_block cf">
             <div class="slider_label rfm_label"><label for="freq_r"> Interval:</label></div>
             <div class="slider_bar"><div id="slider-range-freq"></div> </div>
             <div class="slider_bar_value"><input type="text" id="freq_r" readonly="true"/></div>
-       </div>
-        <div class="rfm_block cf">
-          <span class="rfm_label">Bucket Size:</span>
-          <div class="freq_bs"><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a></div>
+          </div>
+          <div class="rfm_block cf">
+            <span class="rfm_label">Bucket Size:</span>
+            <div id="freq_bs">
+              <input type="radio" id="freq_bs1" name="freq_bs" value="1"/><label for="freq_bs1">1</label>
+              <input type="radio" id="freq_bs2" name="freq_bs" value="2"/><label for="freq_bs2">2</label>
+              <input type="radio" id="freq_bs3" name="freq_bs" value="3" checked="checked" /><label for="freq_bs3">3</label>
+              <input type="radio" id="freq_bs4" name="freq_bs" value="4" /><label for="freq_bs4">4</label>
+            </div>
+            <div id="frequency_submit" class="filter_submit"><a href="#">Submit</a></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div id="tab-3">
-      <div id="container_monetary" style="width:98%"></div>
-      <div class="slider_wrapper_freq cf">
-        <div class="rfm_block cf">
-          <div class="slider_label rfm_label"><label for="price_r"> Interval:</label></div>
-          <div class="slider_bar"><div id="slider-range-price"></div> </div>
-          <div class="slider_bar_value"><input type="text" id="price_r" readonly="true"/></div>
-        </div>
-        <div class="rfm_block cf">
-          <span class="rfm_label">Time Interval:</span>
-          <div class="price_bs"><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a></div>
+
+      <div id="tab-3">
+        <div id="container_monetary" style="width:98%"></div>
+        <div class="slider_wrapper_freq cf">
+          <div class="rfm_block cf">
+            <div class="slider_label rfm_label"><label for="price_r"> Interval:</label></div>
+            <div class="slider_bar"><div id="slider-range-price"></div> </div>
+            <div class="slider_bar_value"><input type="text" id="price_r" readonly="true"/></div>
+          </div>
+          <div class="rfm_block cf">
+            <span class="rfm_label">Time Interval:</span>
+            <div id="price_bs">
+              <input type="radio" id="price_bs1" name="price_bs" value="1"/><label for="price_bs1">1</label>
+              <input type="radio" id="price_bs2" name="price_bs" value="2"/><label for="price_bs2">2</label>
+              <input type="radio" id="price_bs3" name="price_bs" value="3"checked="checked" /><label for="price_bs3">3</label>
+              <input type="radio" id="price_bs4" name="price_bs" value="4"/><label for="price_bs4">4</label>
+            </div>
+            <div id="monetary_submit" class="filter_submit"><a href="#">Submit</a></div>
+          </div>
         </div>
       </div>
-    </div>
 
     </div
   </div>

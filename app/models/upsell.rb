@@ -10,7 +10,7 @@ class Upsell < Substitution
       if behavior.searched_and_available?
         product_category = category(behavior.product)
         behavior_list[product_category] ||= []
-        behavior_list[product_category] << behavior
+        behavior_list[product_category] << behavior if ! behavior_list[product_category].include? behavior
       elsif behavior.purchase?
         products_by_category = products_grouped_by_category(behavior.products)
         products_by_category.each do |category, products|
