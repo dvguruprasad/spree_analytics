@@ -16,25 +16,20 @@ Spree::ProductsController.class_eval do
     end
 
     if @product.substitutions_enabled?
-      @substitutes = @product.substitutes
-      if !@substitutes.empty? && @substitutes.first[:probability] > Spree::Config.probability_threshold_for_discounts && current_user_is_loyal?
-        @promotion = {}
-        @promotion[:product] = @substitutes.first[:product]
-        @promotion[:discount] = 10
-        @substitutes.shift
-      end
+        @substitutes = @product.substitutes
+        if !@substitutes.empty? && @substitutes.first.is_promotional?
+            @promotion = @substitutes.first
+            @substitutes.shift
+        end 
+    elsif @product.recommendations_enabled?
+        @similar_products = @product.similar_products
     end
 
     if @product.brand_taxon && @product.brand_taxon.sentiment_analysis_enabled?
         @sentiment = BrandSentiment.create(@product.brand_taxon.name)
     end
 
-    respond_to do |format|
-      format.js
-      format.html
-    end
-    @product
-    #respond_with(@product)
+    respond_with(@product)
   end
 
   private

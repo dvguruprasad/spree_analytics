@@ -2,5 +2,3 @@
 //= require highcharts
 //= require exporting
 //= require jquery.ui.all
-
-//= require_tree .

@@ -1,39 +1,57 @@
 <div class="cl"></div>
 
-<% if !@promotion.nil? || (!@substitutes.nil? && !@substitutes.empty?) %>
-<div class="subtitutes_block cf">
+<% if @substitutes %>
+    <div class="subtitutes_block cf">
 
-  <div class="subs_block_headertxt">You might be interested in</div>
- <div class="subs_bg cf">
-  <% if !@promotion.nil?%>
-    <div class="subs_discount_wpr">
-      <div class="subs_discount">
-        <div class="subs_txt_discount">Discount</div>
-        <div class="subs_txt_discountval"><%= @promotion[:discount] %>% Off!  </div>
-      </div>
-      <div class="subs_discount_thumb"><%= image_tag(@promotion[:product].images.first.attachment.url(:small)) %>
-      </div>
-      <div class="subs_productname"><%= @promotion[:product].name %></div>
-    </div>
-   <% end %>
+        <div class="subs_block_headertxt">You might be interested in</div>
+        <div class="subs_bg cf">
+            <% if @promotion %>
+                <div class="subs_discount_wpr">
+                    <div class="subs_discount">
+                        <div class="subs_txt_discount">Discount</div>
+                        <div class="subs_txt_discountval"><%= @discount %>% Off!  </div>
+                    </div>
+                    <div class="subs_discount_thumb"><%= image_tag(@promotion.images.first.attachment.url(:small)) %>
+                    </div>
+                    <div class="subs_productname"><%= @promotion.name %></div>
+                </div>
+            <% end %>
 
-  <% if !@substitutes.nil? && !@substitutes.empty? %>
-   <div class="subtitutes_blockR">
-    <div class="subs_wpr cf">
-      <ul class="cf">
-        <% @substitutes.each do |substitute|%>
-            <% product = substitute[:product] %>
-              <li><a href="javascript:void(0)">
-              <div><%= image_tag(product.images.first.attachment.url(:small)) %></div>
-              <span class="subs_productname"><%= product.name %></span>
-              </a>
-              </li>
-        <% end%>
-      </ul>
+            <div class="subtitutes_blockR">
+                <div class="subs_wpr cf">
+                    <ul class="cf">
+                        <% @substitutes.each do |substitute|%>
+                            <li><a href="javascript:void(0)">
+                                <div><%= image_tag(substitute.images.first.attachment.url(:small)) %></div>
+                                <span class="subs_productname"><%= substitute.name %></span>
+                            </a>
+                            </li>
+                        <% end%>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
     </div>
-   </div>
-  <% end%>
- </div>
-</div>
 <% end%>
+<% if @similar_products %>
+    <div class="subtitutes_block cf">
+        <div class="subs_block_headertxt">Products similar to <i><%= @product.name %></i></div>
+        <div class="subs_bg cf">
+                <div class="subtitutes_blockR">
+                    <div class="subs_wpr cf">
+                        <ul class="cf">
+                            <% @similar_products.each do |product|%>
+                                <li><a href="javascript:void(0)">
+                                    <div><%= image_tag(product.images.first.attachment.url(:small)) %></div>
+                                    <span class="subs_productname"><%= product.name %></span>
+                                </a>
+                                </li>
+                            <% end%>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+    </div>
+<% end %>
 

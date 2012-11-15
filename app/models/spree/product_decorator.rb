@@ -53,6 +53,14 @@ end
 Spree::Product.class_eval do
     CATEGORIES_TAXONOMY_NAME = "Categories"
     BRAND_TAXONOMY_NAME = "Brand"
+    WINE_TAXON = "Wines"
+
+    attr_accessor :is_promotional
+
+    def is_promotional?
+        !!@is_promotional
+    end
+
 
     def out_of_stock?
         variants.empty? ? count_on_hand == 0 : variants.all?{|v| v.count_on_hand == 0}
@@ -74,15 +82,16 @@ Spree::Product.class_eval do
         out_of_stock? ? OOSSubstitutionProbability.find_substitutes_for(self) : UpsellProbability.find_upsells_for(self)
     end
 
+    # this works only for wines!
+    def similar_products
+        Recommendation::AttributeBasedSimilarity.similar_to(self)
+    end
+
     def substitutions_enabled?
-        if !taxons.empty?
-          taxons.any? {|t| t.substitutions_enabled?}
-        else
-          true
-        end
+        !taxons.empty? && taxons.any? {|t| t.substitutions_enabled?}
     end
 
     def recommendations_enabled?
-        taxons.any? {|t| t.recommendations_enabled?}
+        !taxons.empty? && taxons.any? {|t| t.recommendations_enabled?}
     end
 end

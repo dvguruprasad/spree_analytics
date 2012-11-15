@@ -9,7 +9,7 @@ class SubstitutionProbability < ActiveRecord::Base
         substitution.save
     end
 
-    def self.find_substitutes_for(product)
+    def self.top_substitutes_for(product)
         return {} if product.nil?
         substitution_probabilities = find(:all, :conditions => ["searched_product = ?", product.id],
                                           :order => "probability DESC", :limit => 5)

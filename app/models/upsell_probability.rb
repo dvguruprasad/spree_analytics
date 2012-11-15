@@ -8,7 +8,7 @@ class UpsellProbability < SubstitutionProbability
             substitute_product_price = price(bought_product)
             searched_product_price = price(product)
             if substitute_product_price > searched_product_price
-                upsells << {probability: possible_upsell.probability, product:bought_product}
+                upsells << bought_product
             end
         end
         upsells
