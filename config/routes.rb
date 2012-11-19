@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get "sentiment", :to => "sentiment#show"
+  get "telescope", :to => "telescope#index"
 
   # Add your extension routes here
   get "/rfm", :to => "rfm#index"

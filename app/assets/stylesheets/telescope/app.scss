@@ -1,0 +1,9 @@
+@import "all/reset";
+@import "all/base";
+@import "all/layout";
+
+html {
+  body {
+    @import "pages/categories";
+  }
+}

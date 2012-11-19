@@ -1,0 +1,93 @@
+section {
+  #categories {
+    width: 996px;
+    margin: 0 auto;
+    padding: 50px 14px 0;
+    & > ul {
+      border: 8px solid rgba(166, 166, 166, 0.25);
+      width: 980px;
+      & > li {
+        width: 245px;
+        float: left;
+        & > a {
+          padding: 10px 15px;
+          height: 150px;
+          display: block;
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.15);
+          }
+        }
+        h2 {
+          font-size: 17px;
+          font-weight: 400;
+          text-align: center;
+          text-transform: uppercase;
+          color: rgba(0, 0, 0, 0.85);
+          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        ul.util-bar {
+          li {
+            float: left;
+            &.notifications {
+              color: #232323;
+              position: relative;
+              span {
+                font-size: 24px;
+              }
+              em {
+                color: #fff;
+                font-style: normal;
+                font-size: 10px;
+                line-height: 10px;
+                text-align: center;
+                position: absolute;
+                top: -9px;
+                right: -7px;
+                background-color: #dd0017;
+                border: 2px solid #fff;
+                padding: 2px 4px;
+                @include border-radius(12px);
+                @include box-shadow-2x(inset 0 1px 1px 1px rgba(0, 0, 0, 0.15),  -1px 1px 1px 1px rgba(0, 0, 0, 0.25));
+              }
+            }
+          }
+        }
+        .pro-meter-wrapper {
+          margin-top: 10px;
+          text-align: center;
+          .pro-meter {
+            display: inline-block;
+            margin: 0 auto;
+            height: 28px;
+            line-height: 28px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.35);
+            @include border-radius(14px);
+            @include box-shadow-2x(inset 0 1px 1px 0 rgba(0, 0, 0, 0.25),  0 1px 1px 0 rgba(255, 255, 255, 0.25));
+            em {
+              margin-right: 12px;
+              float: left;
+              font-style: normal;
+            }
+            span {
+              float: left;
+              border-style: solid;
+              margin: 9px 8px 0 12px;
+            }
+            span.up {
+              border-color: transparent transparent #afe966 transparent;
+              border-width: 0 10px 10px 10px;
+            }
+            span.down {
+              border-color: #e67a79 transparent transparent transparent;
+              border-width: 10px 10px 0 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

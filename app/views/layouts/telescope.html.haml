@@ -1,0 +1,28 @@
+!!! 5
+:plain
+  <!--[if lt IE 7]><html lang="en" class="ie lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+  <!--[if IE 7]><html lang="en" class="ie lt-ie9 lt-ie8"><![endif]-->
+  <!--[if IE 8]><html lang="en" class="ie lt-ie9"><![endif]-->
+  <!--[if gt IE 8]><!--><html lang="en"><!--<![endif]-->
+%head
+  %meta(charset="utf-8")
+    %title
+    %meta(name="description" content="")
+    %meta(name="keywords" content="")
+    %meta(name="author" content="")
+    -#%link(href="../../assets/favicon.ico" rel="shortcut icon" type="image/png")
+    - if Rails.env == "staging"
+      %meta(name="robots" content="noindex, nofollow")
+    = yield :meta
+    = stylesheet_link_tag "telescope/application"
+    = csrf_meta_tags
+
+    /[if (lt IE 9) & (!IEMobile)]
+      %script{:src => "//html5shim.googlecode.com/svn/trunk/html5.js"}
+%body(id="#{controller_path}")
+  #telescope_wrapper
+    = render :partial => "/layouts/shared/header"
+    %section
+      = yield
+    = render :partial => "/layouts/shared/footer"
+    = javascript_include_tag "telescope/application"
