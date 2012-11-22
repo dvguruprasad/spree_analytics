@@ -14,7 +14,7 @@ class OOSSubstitutionProbabilitySpec
                 substitution_probabilities.count.should eql 1
                 substitution_probabilities.first.searched_product.should eql @@searched
                 substitution_probabilities.first.bought_product.should eql @@purchased
-                substitution_probabilities.first.probability.should eql 5.0/7.0
+                substitution_probabilities.first.probability.should eql (5.0/7.0).round(6)
 
             end
 
@@ -31,9 +31,9 @@ class OOSSubstitutionProbabilitySpec
                 SubstitutionProbability.generate_for_oos_substitution
                 substitution_probabilities = OOSSubstitutionProbability.find(:all)
                 substitution_probabilities.count eql 3
-                assert_probabilities(substitution_probabilities, @@searched, @@purchased, 0.7142857142857143)
-                assert_probabilities(substitution_probabilities, searched_2, purchased_2, 0.42857142857142855)
-                assert_probabilities(substitution_probabilities, searched_3, purchased_3, 0.6666666666666666)
+                assert_probabilities(substitution_probabilities, @@searched, @@purchased, (0.7142857142857143).round(6))
+                assert_probabilities(substitution_probabilities, searched_2, purchased_2, (0.42857142857142855).round(6))
+                assert_probabilities(substitution_probabilities, searched_3, purchased_3, (0.6666666666666666).round(6))
 
             end
 
@@ -59,9 +59,10 @@ class OOSSubstitutionProbabilitySpec
         end
 
         def assert_probabilities(actual_probabilities, searched, purchased, probability)
-            actual_probabilities.any? do |p|
+            result = actual_probabilities.any? do |p|
                 p.bought_product == purchased && p.searched_product == searched && p.probability == probability
-            end.should be_true
+            end
+            result.should be_true
         end
     end
 end
