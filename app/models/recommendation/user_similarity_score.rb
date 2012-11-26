@@ -2,6 +2,7 @@ module Recommendation
     class UserSimilarityScore < ActiveRecord::Base
         self.table_name = "spree_user_similarity_scores" 
         attr_accessible :user1_id, :user2_id, :score
+
         def self.create_scores
             query = <<-HERE
         select DISTINCT spree_users.* from spree_users RIGHT JOIN spree_product_buy_counts ON spree_users.id=spree_product_buy_counts.user_id;
@@ -31,6 +32,15 @@ module Recommendation
             pearson_similarity_score(common_product_ids, buy_count_1, buy_count_2) 
         end
 
+        def self.similar_to(user_id)
+            similar_users = {}
+            user1_match_scores = UserSimilarityScore.find_all_by_user1_id(user_id)
+            user2_match_scores = UserSimilarityScore.find_all_by_user2_id(user_id)
+
+            user1_match_scores.each {|usc| similar_users[Spree.user_class.find(usc.user2_id)] = usc.score}
+            user2_match_scores.each {|usc| similar_users[Spree.user_class.find(usc.user1_id)] = usc.score}
+            similar_users
+        end
         private
         def self.pearson_similarity_score(common_products, buy_count_1, buy_count_2)
             n = common_products.size
