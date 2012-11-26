@@ -1,5 +1,5 @@
 Spree.user_class.instance_eval do
-    has_many    :product_buy_counts, :class_name => "ProductBuyCount", :foreign_key => "user_id" 
+    has_many    :product_buy_counts, :class_name => "Recommendation::ProductBuyCount", :foreign_key => "user_id" 
     def monetary_distribution(ranges)
         order_value_frequency = {}
         ranges.each do |range|
@@ -90,6 +90,14 @@ Spree.user_class.class_eval do
     def substitutions_since(last_capture_timestamp, substitution_kind)
         behaviors = UserBehavior.all_user_behavior_since(id, last_capture_timestamp)
         substitution_kind.identify_substitutions(behaviors)
+    end
+
+    def common_products(user)
+        user1_pbc = product_buy_counts()
+        user2_pbc = user.product_buy_counts()
+        user1_product_ids = user1_pbc.collect {|pbc| pbc.product_id}
+        user2_product_ids = user2_pbc.collect {|pbc| pbc.product_id}
+        user1_product_ids & user2_product_ids
     end
 
     def is_loyal?
