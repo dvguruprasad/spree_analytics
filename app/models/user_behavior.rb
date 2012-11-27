@@ -12,9 +12,9 @@ class UserBehavior < ActiveRecord::Base
     end
 
     def self.search_count(searched_product, is_available)
-      parameters ="{\"product\": #{searched_product}, \"available\": #{is_available}" 
-      not_available_count = UserBehavior.count(:all, :conditions => ["action = ? AND parameters LIKE ?", 'S', "#{parameters}%"])
-      not_available_count
+        parameters ="{\"product\": #{searched_product}, \"available\": #{is_available}" 
+        not_available_count = UserBehavior.count(:all, :conditions => ["action = ? AND parameters LIKE ?", 'S', "#{parameters}%"])
+        not_available_count
     end
 
     def self.record_add_to_cart(product_id, order_id, user, session_id)
@@ -27,6 +27,10 @@ class UserBehavior < ActiveRecord::Base
 
     def self.all_user_behavior_since(user_id, last_capture_timestamp)
         find(:all, :conditions => ["user_id = ? and created_at > ?", user_id, last_capture_timestamp])
+    end
+
+    def self.all_purchase_behavior_since(user_id, last_capture_timestamp)
+        find(:all, :conditions => ["user_id = ? and created_at > ? and action = 'P'", user_id, last_capture_timestamp])
     end
 
     def searched_and_not_available?

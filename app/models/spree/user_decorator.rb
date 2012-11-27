@@ -100,7 +100,7 @@ Spree.user_class.class_eval do
         user1_product_ids & user2_product_ids
     end
 
-    def has_bought(product_id)
+    def has_bought?(product_id)
         Recommendation::ProductBuyCount.count(:conditions => "user_id = #{self.id} AND product_id = #{product_id}") > 0
     end
 

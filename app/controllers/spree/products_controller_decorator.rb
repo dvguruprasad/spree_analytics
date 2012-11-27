@@ -25,6 +25,7 @@ Spree::ProductsController.class_eval do
         @similar_products = @product.similar_products
     end
 
+    @cf_recommendations = Recommendation::CFRecommendation.for_user(spree_current_user) unless spree_current_user.nil?
     if @product.brand_taxon && @product.brand_taxon.sentiment_analysis_enabled?
         @sentiment = BrandSentiment.create(@product.brand_taxon.name)
     end

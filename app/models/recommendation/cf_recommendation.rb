@@ -2,6 +2,7 @@ module Recommendation
     class CFRecommendation < ActiveRecord::Base
         self.table_name = "spree_cf_recommendations"
         attr_accessible :user_id, :product_ids
+
         def self.generate()
             all_user_ids = ProductBuyCount.select(:user_id).uniq.collect{|pbc| pbc.user_id}
             for i in 0..all_user_ids.count-1
@@ -18,12 +19,19 @@ module Recommendation
 
         end
 
+        def self.for_user(user)
+            product_ids = JSON.parse(find_by_user_id(user.id).product_ids)
+            product_ids.collect do |p_id|
+                Spree::Product.find(p_id) if ! user.has_bought? p_id
+            end.take(6)
+        end
+
         private
         def self.weighted_buy_count_sums(similar_users, user)
             weighted_buy_count_sums = {}
             similar_users.each do |similar_user,score|
                 similar_user.product_buy_counts.collect do |pbc|
-                    next if user.has_bought pbc.product_id
+                    next if user.has_bought? pbc.product_id
                     weighted_buy_count_sums[pbc.product_id] ||= 0
                     weighted_buy_count_sums[pbc.product_id] += pbc.count * score
                 end
