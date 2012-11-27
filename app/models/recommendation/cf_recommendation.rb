@@ -20,7 +20,10 @@ module Recommendation
         end
 
         def self.for_user(user)
-            product_ids = JSON.parse(find_by_user_id(user.id).product_ids)
+            recommendation = find_by_user_id(user.id)
+            return [] if recommendation.nil?
+            product_ids = JSON.parse(recommendation.product_ids)
+
             product_ids.collect do |p_id|
                 Spree::Product.find(p_id) if ! user.has_bought? p_id
             end.take(6)
