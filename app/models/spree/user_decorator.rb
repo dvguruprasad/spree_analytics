@@ -1,5 +1,13 @@
 Spree.user_class.instance_eval do
     has_many    :product_buy_counts, :class_name => "Recommendation::ProductBuyCount", :foreign_key => "user_id" 
+
+    def find_all_with_atleast_one_purchase
+        query = <<-HERE
+        select DISTINCT spree_users.* from spree_users RIGHT JOIN spree_product_buy_counts ON spree_users.id=spree_product_buy_counts.user_id;
+        HERE
+        find_by_sql(query)
+    end
+
     def monetary_distribution(ranges)
         order_value_frequency = {}
         ranges.each do |range|

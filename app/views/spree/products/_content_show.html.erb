@@ -28,19 +28,21 @@
         <div>
           <div id="tagcloud" class="tagcloud cf"> </div>
         </div>
-        <h3>Passion AND Reach</h3>
-        <div style="height:20px;width:250px">
-            <div id="passion">
-                <b>Passion</b> is a measure of the likelihood that individuals talking about the brand will do so repeatedly.
-                <b><%= @sentiment.passion[:positive] %>%</b> of tweeters are <i>positively</i> passionate and <b><%= @sentiment.passion[:negative]%>%</b>
-                of users are <i>negatively</i> passionate about <%= @sentiment.brand %>. The rest are neutral.
+        <% if @sentiment %>
+            <h3>Passion AND Reach</h3>
+            <div style="height:20px;width:250px">
+                <div id="passion">
+                    <b>Passion</b> is a measure of the likelihood that individuals talking about the brand will do so repeatedly.
+                    <b><%= @sentiment.passion[:positive] %>%</b> of tweeters are <i>positively</i> passionate and <b><%= @sentiment.passion[:negative]%>%</b>
+                    of users are <i>negatively</i> passionate about <%= @sentiment.brand %>. The rest are neutral.
+                </div>
+                <br/>
+                <div id="reach">
+                    <b>Reach</b> is a measure of the range of influence of the brand. It is the number of unique tweeters referencing the brand.
+                    <b><%= @sentiment.reach %></b> is <%=@sentiment.brand%>'s reach.
+                </div>
             </div>
-            <br/>
-            <div id="reach">
-                <b>Reach</b> is a measure of the range of influence of the brand. It is the number of unique tweeters referencing the brand.
-                <b><%= @sentiment.reach %></b> is <%=@sentiment.brand%>'s reach.
-            </div>
-        </div>
+        <% end %>
     </div>
       </div>
       <!--</div>-->

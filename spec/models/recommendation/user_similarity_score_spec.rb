@@ -2,7 +2,7 @@ require 'spec_helper'
 module Recommendation
     class UserSimilaritySpec
         describe "UserSimilarityScore" do
-            context ".pearson_similarity_score" do 
+            context ".pearson_similarity_score" do
                 it "should return 0 if the common product buy count is 0" do
                     user_1_buy_count = {1111 => 1, 2222 => 3, 3333 => 5}
                     user_2_buy_count = {9999 => 1, 77777 => 3, 5555 => 5}

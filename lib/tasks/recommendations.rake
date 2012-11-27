@@ -1,4 +1,4 @@
-namespace :r do
+namespace :rec do
     namespace :cf do
         task :generate => :environment do
             Recommendation::ProductBuyCount.generate

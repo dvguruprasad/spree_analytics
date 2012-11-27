@@ -3,7 +3,7 @@ module Recommendation
         self.table_name = "spree_cf_recommendations"
         attr_accessible :user_id, :product_ids
 
-        def self.generate()
+        def self.generate
             all_user_ids = ProductBuyCount.select(:user_id).uniq.collect{|pbc| pbc.user_id}
             for i in 0..all_user_ids.count-1
                 user = Spree.user_class.find(all_user_ids[i])
