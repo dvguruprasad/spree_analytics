@@ -1,5 +1,5 @@
-class SubstitutionIdentificationTimestamp < ActiveRecord::Base
-  self.table_name = "substitution_identification_timestamp"
+class RecommendationIdentificationTimestamp < ActiveRecord::Base
+  self.table_name = "recommendation_identification_timestamps"
 
   attr_accessible :value,:substitution_type
 
