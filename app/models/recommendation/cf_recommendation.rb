@@ -14,7 +14,7 @@ module Recommendation
                     final_product_weights[product_id] = weighted_buy_count / similarity_score_sum(similar_users_score_hash, product_id)
                 end
                 result = Hash[final_product_weights.sort_by{|product_id, weight| weight}.reverse].keys
-                CFRecommendation.create(:user_id => user.id,:product_ids => result.to_json) if !result.empty?
+                self.create_or_update(user.id, result) unless result.empty?
             end
 
         end
@@ -27,6 +27,17 @@ module Recommendation
         end
 
         private
+
+        def self.create_or_update(user_id, result)
+            cf_recommendation = CFRecommendation.find_by_user_id(user_id)
+            if cf_recommendation.nil?
+                CFRecommendation.create(:user_id => user_id,:product_ids => result.to_json)
+            else
+                cf_recommendation.product_ids = result.to_json
+                cf_recommendation.save
+            end
+        end
+
         def self.weighted_buy_count_sums(similar_users, user)
             weighted_buy_count_sums = {}
             similar_users.each do |similar_user,score|
@@ -41,7 +52,7 @@ module Recommendation
 
         def self.similarity_score_sum(similar_users, product_id)
             similar_users.inject(0) do |sum, (similar_user,score)|
-                sum += (similar_user.has_bought(product_id)) ? score : 0
+                sum += (similar_user.has_bought?(product_id)) ? score : 0
             end
         end
 

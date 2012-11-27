@@ -11,8 +11,9 @@ module Recommendation
             return if all_users.count < 2
             for i in 0..all_users.count-1
                 for j in (i+1)..all_users.count-1
+                    p "User ids #{all_users[i].id} #{all_users[j].id}"
                     user_similarity_score = self.similarity_score(all_users[i], all_users[j])
-                    UserSimilarityScore.create(:user1_id => all_users[i].id, :user2_id => all_users[j].id, :score => user_similarity_score) if user_similarity_score != 0
+                    self.create_or_update(all_users[i].id, all_users[j].id, user_similarity_score) unless user_similarity_score == 0
                 end
             end
         end
@@ -42,6 +43,17 @@ module Recommendation
             similar_users
         end
         private
+
+        def self.create_or_update(user1, user2, score)
+            user_similarity_score = UserSimilarityScore.find_by_user1_id_and_user2_id(user1,user2)
+            if user_similarity_score.nil?
+                UserSimilarityScore.create(:user1_id => user1, :user2_id => user2, :score => score) 
+            else
+                user_similarity_score.score = score
+                user_similarity_score.save
+            end
+        end
+
         def self.pearson_similarity_score(common_products, buy_count_1, buy_count_2)
             n = common_products.size
             return 0 if n == 0
