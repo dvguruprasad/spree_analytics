@@ -3,14 +3,14 @@
 function load_sentiment_pie (sentiment) {
     $('#accordion').removeClass('hide');
     if(typeof Highcharts != "undefined") {
-        RenderPieChart('container',  sentiment[0] );
+        render_pie_chart('container',  sentiment );
     }
     $( "#accordion" ).accordion({
         header: "h3"
     });
 }
 
-function RenderPieChart(elementId, dataList){
+function render_pie_chart(elementId, dataList){
     Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
         return {
             radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
@@ -65,7 +65,7 @@ function RenderPieChart(elementId, dataList){
     });
 }
 
-function RenderTagCloud(sentiment_tags){
+function render_tag_cloud(sentiment_tags){
     $("<ul class='cf'>").attr("id", "tagList").appendTo("#tagcloud");
     $.each(sentiment_tags, function(i, val) {     //alert(val.name);
         var li = $("<li>");
