@@ -1,1 +1,1 @@
-class UpsellIdentificationTimestamp < SubstitutionIdentificationTimestamp; end
+class UpsellIdentificationTimestamp < RecommendationIdentificationTimestamp; end

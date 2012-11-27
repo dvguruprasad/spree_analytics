@@ -1,1 +1,1 @@
-class OOSSubstitutionIdentificationTimestamp < SubstitutionIdentificationTimestamp; end
+class OOSSubstitutionIdentificationTimestamp < RecommendationIdentificationTimestamp; end
