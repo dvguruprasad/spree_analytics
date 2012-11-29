@@ -15,20 +15,19 @@ Spree.user_class.instance_eval do
         end
         users = all_users
         order_values_by_user = users.map do |u|
-            orders_of_user = orders.select {|o| o[:user_id] == u[:user_id]}
-            {:user_id => u[:user_id], :average_order_value => average(orders_of_user),
+            orders_of_user = u.orders.map {|o| {:user_id => o.user_id, :order_value => o.total, :date => o.created_at, :id => o.id}}
+            {:user_id => u.id, :average_order_value => average(orders_of_user),
              :transactions => orders_of_user}
         end
-
         order_values_by_user.each do |ov|
             order_value_frequency.keys.each do |ovf|
                 value = ov[:average_order_value]
-                if value >= ovf.begin && value <= ovf.end
+                if value >= ovf.begin-1 && value < ovf.end
                     order_value_frequency[ovf] += 1
                 end
             end
         end
-        convert_to_percentage(order_value_frequency, users.length)
+        convert_to_percentage(order_value_frequency, all_users_count)
     end
 
     def recency_distribution(recency_ranges)
@@ -37,7 +36,7 @@ Spree.user_class.instance_eval do
             distribution[range] = 0
             distribution[range] += count_of_users_in_recency_range(range)
         end
-        convert_to_percentage(distribution, all_users.length)
+        distribution
     end
 
     def frequency_distribution(ranges)
@@ -46,12 +45,16 @@ Spree.user_class.instance_eval do
             distribution[range] = 0
             distribution[range] += count_of_users_in_transaction_frequency_range(range)
         end
-        convert_to_percentage(distribution, all_users.length)
+        convert_to_percentage(distribution, all_users_count)
     end
 
     private
     def all_users
-        @users ||= Spree.user_class.find(:all, :select => "id").map {|u| {:user_id => u.id }}
+        @users ||= Spree::Order.select(:user_id).uniq.where("user_id != 'NULL'").map{|o| Spree.user_class.find(o.user_id) }
+    end
+
+    def all_users_count
+        Spree::Order.select(:user_id).uniq.where("user_id != 'NULL'").length
     end
 
     def orders
@@ -68,9 +71,10 @@ Spree.user_class.instance_eval do
 
     def count_of_users_in_recency_range(range)
         from = Date.today - range.end
-        to = Date.today - range.begin
+        to = Date.today - range.begin + 1
+        state = 'complete'
         query = <<-HERE
-                select count(distinct(user_id)) as customer_count from spree_orders where created_at >= '#{from}' and created_at < '#{to}'
+                select count(distinct(user_id)) as customer_count from spree_orders where state = '#{state}' and created_at >= '#{from}' and created_at < '#{to}'
         HERE
         ActiveRecord::Base.connection.execute(query).first[0]
     end
@@ -78,8 +82,9 @@ Spree.user_class.instance_eval do
     def count_of_users_in_transaction_frequency_range(range)
         from = Date.today - range.end
         to = Date.today - range.begin
+        state = 'complete'
         query = <<-HERE
-               select count(*) from (select count(*) customer_count from spree_orders o group by o.user_id having customer_count >= #{range.begin} and customer_count < #{range.end}) AS DERIVED
+               select count(*) from (select count(*) customer_count from spree_orders o where  o.state = '#{state}' group by o.user_id having customer_count >= #{range.begin} and customer_count < #{range.end}) AS DERIVED
         HERE
         ActiveRecord::Base.connection.execute(query).first[0]
     end

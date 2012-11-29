@@ -152,7 +152,10 @@ function render_chart(url, container, title, subtitle){
               fontWeight: 'bold'
             },
             formatter: function() {
-              return this.y +'%';
+                type = '%';
+                if (container == 'container_recency')
+                    type = '';
+              return this.y + type ;
             }
           }
         }

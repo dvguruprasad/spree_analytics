@@ -8,7 +8,7 @@ class RfmController < ApplicationController
     monetary_range = Range.new(params[:price_range].first.to_i, params[:price_range].last.to_i)
     monetary_ranges = monetary_range.split(params[:bucket_size].to_i)
     distribution = Spree::User.monetary_distribution(monetary_ranges)
-    data = create_chart_data(distribution, :products_sold_for_price_range)
+    data = create_chart_data(distribution, :products_in_orders_with_monetary_range)
     json_response = Report.new('Price Range', labels_for_order_value(monetary_ranges).values, data, colors[0]).to_json
     respond_with(json_response)
   end

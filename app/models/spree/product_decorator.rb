@@ -1,13 +1,18 @@
 Spree::Product.instance_eval do
-    def  products_sold_for_price_range(range)
-        query = <<-HERE
-        select spree_products.name as product_name, spree_products.id , count(*) as product_count
-        from spree_products join spree_variants on (spree_products.id = spree_variants.product_id )
-                            join spree_line_items on (spree_line_items.variant_id=spree_variants.id)
-                                and spree_variants.price >=#{range.first} and spree_variants.price < #{range.last}
-                group by spree_products.id order by product_count desc
-                                HERE
-                                construct_result(query)
+
+    def  products_in_orders_with_monetary_range(range)
+        products_bought_as_part_of_bucket = []
+        Spree::Order.where("total >= #{range.first} and total < #{range.last}").map{|order| products_bought_as_part_of_bucket += order.products}
+        products_with_count = Hash.new(0)
+        products_bought_as_part_of_bucket.each do |p|
+            products_with_count[p] += 1
+        end
+        result = {:product_names => [], :data => []}
+        products_with_count.map do |p,c| 
+            result[:product_names] << p.name
+        end
+        result[:data] += in_percentage(products_with_count.values)
+        result
     end
 
     def products_sold_in_date_range(range)
