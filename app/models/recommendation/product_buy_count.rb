@@ -6,7 +6,6 @@ module Recommendation
             CFRecommendationIdentificationTimestamp.read_and_update
         end
 
-
         def self.generate()
             all_users = Spree.user_class.all
             last_capture_timestamp = self.last_capture_timestamp
