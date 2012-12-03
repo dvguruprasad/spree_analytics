@@ -89,12 +89,13 @@
             $box.addClass(this.nodeClass(node, $box));
 
             var $content = $("<div>" + node.label + "</div>");
+            console.log($content[0]);
             $content.addClass('treemap-label');
             $content.css({
                 'display': 'inline',
                 'position': 'relative',
                 'text-align': 'center',
-                'font-size': '24px'
+                'font-size': '20px'
             });
             $box.append($content);
 
@@ -110,7 +111,7 @@
         var nodeBounds = node.bounds
         while ($content.height() + TreeMap.TOP_MARGIN > nodeBounds.height || $content.width() + TreeMap.SIDE_MARGIN > nodeBounds.width) {
             var fontSize = parseFloat($content.css('font-size')) - 3;
-            if (fontSize < 15) {
+            if (fontSize < 1) {
                 $content.remove();
                 break;
             }
@@ -147,8 +148,8 @@
         var orientation;
 
         var leftSum = this.sumValues(halves.left),
-            rightSum = this.sumValues(halves.right),
-            totalSum = leftSum + rightSum;
+                rightSum = this.sumValues(halves.right),
+                totalSum = leftSum + rightSum;
 
         if (leftSum + rightSum <= 0) {
             midPoint = 0;
@@ -196,7 +197,7 @@
         for (var i = 0; i < length; i++)
             result += nodeList[i].value;
         return result;
-    };
+    };    
 
     $.fn.treemap = function(json, options) {
         var self = this;
