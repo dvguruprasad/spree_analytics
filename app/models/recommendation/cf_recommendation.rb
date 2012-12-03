@@ -19,6 +19,23 @@ module Recommendation
 
         end
 
+        def self.generate_by_search_behavior
+            all_user_ids = ProductViewCount.select(:user_id).uniq.collect{|pbc| pbc.user_id}
+            for i in 0..all_user_ids.count-1
+                user = Spree.user_class.find(all_user_ids[i])
+                similar_users_score_hash = UserSimilarityScore.similar_to(user.id)
+                weighted_buy_count_sums = self.weighted_buy_count_sums(similar_users_score_hash, user)
+                final_product_weights = {}
+                weighted_buy_count_sums.each do |product_id, weighted_buy_count|
+                    final_product_weights[product_id] = weighted_buy_count / similarity_score_sum(similar_users_score_hash, product_id)
+                end
+                result = Hash[final_product_weights.sort_by{|product_id, weight| weight}.reverse].keys
+                self.create_or_update(user.id, result) unless result.empty?
+            end
+
+        end
+
+
         def self.for_user(user)
             recommendation = find_by_user_id(user.id)
             return [] if recommendation.nil?
