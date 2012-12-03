@@ -1,0 +1,10 @@
+<div id='treemap-div'></div>
+<%= stylesheet_link_tag "admin/assortment_map" %>
+<%= javascript_include_tag 'https://raw.github.com/npramod05/jquery-treemap/master/jquery-treemap.js' %>
+<%= javascript_include_tag "admin/assortment_map" %>
+
+<script>
+    var list = <%= raw @data %>;
+    render_tree_map(list);
+</script>
+
