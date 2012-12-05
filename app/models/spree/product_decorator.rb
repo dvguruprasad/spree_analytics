@@ -2,7 +2,10 @@ Spree::Product.instance_eval do
 
     def  products_in_orders_with_monetary_range(range)
         products_bought_as_part_of_bucket = []
-        Spree::Order.where("total >= #{range.first} and total < #{range.last}").map{|order| products_bought_as_part_of_bucket += order.products}
+        users_in_bucket_range = [] 
+        #Spree::Order.where("total >= #{range.first} and total < #{range.last}").map{|order| products_bought_as_part_of_bucket += order.products}
+        Spree::User.order_values_by_users(Spree::User.all_users).each{|ovHash| users_in_bucket_range << ovHash[:user_id] if ovHash[:average_order_value] >= range.first and ovHash[:average_order_value] < range.last  }
+        Spree::Order.where(:user_id => users_in_bucket_range).map{|order| products_bought_as_part_of_bucket += order.products}
         products_with_count = Hash.new(0)
         products_bought_as_part_of_bucket.each do |p|
             products_with_count[p] += 1

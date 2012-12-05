@@ -12,7 +12,9 @@
                         <div class="subs_txt_discountval"><%= @discount %>% Off!  </div>
                     </div>
                     <div class="subs_discount_thumb"><%= image_tag(@promotion.images.first.attachment.url(:small)) %>
-                    </div>
+        <%= link_to truncate(@promotion.name, :length => 50), product, :class => 'info', :itemprop => "name", :title => product.name %>
+                
+                </div>
                     <div class="subs_productname"><%= @promotion.name %></div>
                 </div>
             <% end %>

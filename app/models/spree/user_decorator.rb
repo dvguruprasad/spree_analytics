@@ -14,15 +14,11 @@ Spree.user_class.instance_eval do
             order_value_frequency[range] = 0
         end
         users = all_users
-        order_values_by_user = users.map do |u|
-            orders_of_user = u.orders.map {|o| {:user_id => o.user_id, :order_value => o.total, :date => o.created_at, :id => o.id}}
-            {:user_id => u.id, :average_order_value => average(orders_of_user),
-             :transactions => orders_of_user}
-        end
+        order_values_by_user = order_values_by_users(users)
         order_values_by_user.each do |ov|
             order_value_frequency.keys.each do |ovf|
                 value = ov[:average_order_value]
-                if value >= ovf.begin-1 && value < ovf.end
+                if value > ovf.begin-1 && value <= ovf.end
                     order_value_frequency[ovf] += 1
                 end
             end
@@ -48,10 +44,18 @@ Spree.user_class.instance_eval do
         convert_to_percentage(distribution, all_users_count)
     end
 
-    private
+    def order_values_by_users(users)
+        users.map do |u|
+            orders_of_user = u.orders.map {|o| {:user_id => o.user_id, :order_value => o.total, :date => o.created_at, :id => o.id}}
+            {:user_id => u.id, :average_order_value => average(orders_of_user),
+             :transactions => orders_of_user}
+        end
+    end
+
     def all_users
         @users ||= Spree::Order.select(:user_id).uniq.where("user_id != 'NULL'").map{|o| Spree.user_class.find(o.user_id) }
     end
+    private
 
     def all_users_count
         Spree::Order.select(:user_id).uniq.where("user_id != 'NULL'").length
