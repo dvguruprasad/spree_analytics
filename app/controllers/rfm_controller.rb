@@ -1,4 +1,4 @@
-class RfmController < ApplicationController
+class RfmController < Spree::Admin::BaseController
   respond_to :html, :xml, :json
 
   def index

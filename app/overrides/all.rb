@@ -12,3 +12,8 @@ Deface::Override.new(:virtual_path => "spree/products/show",
 :name => "show_substitutions",
 :insert_after => "[data-hook='product_show']",
 :partial => "spree/products/substitutes")
+Deface::Override.new(:virtual_path => "spree/layouts/admin",
+                     :name => "rfm",
+                     :insert_bottom => "[data-hook='admin_tabs']",
+                     :text => "<%= tab(:rfm, :url => '/admin/rfm') %>")
+

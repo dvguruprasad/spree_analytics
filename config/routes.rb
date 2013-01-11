@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get "rfm", :to => "rfm#index"
+  get "/admin/rfm", :to => "rfm#index", :as => :rfm
   get "sentiment", :to => "sentiment#show"
   get "telescope", :to => "telescope#index"
 
