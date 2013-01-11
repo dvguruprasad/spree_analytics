@@ -286,9 +286,6 @@ html,body{
 /*** ui rfm slider  **/
 
 #rfm_body{
-    background:#000000;
-    padding-top:80px;
-    height:100%;
 }
 #rfm_body h1{
     text-align: center;
@@ -308,7 +305,7 @@ html,body{
 .rfm_label{
     padding-right:30px;
     text-align: right;
-    width:100px;
+    width:116px;
     float:left;
 }
 .slider_bar{
@@ -323,6 +320,9 @@ html,body{
 }
 .rfm_block{
     padding:20px 0px;
+}
+.rfm_innerblock{
+    padding:5px 0px;
 }
 #freq_r,#price_r{
     background:transparent;
@@ -340,7 +340,7 @@ html,body{
     background: -webkit-gradient(linear, left top, left bottom, from(#3093c7), to(#1c5a85));
     background: -moz-linear-gradient(top,  #3093c7,  #1c5a85);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#3093c7', endColorstr='#1c5a85');
-    color:#ffffff;
+    color:#f7f7f7 !important;
     padding:4px 15px;
     margin-right:20px;
     border-radius:50px;
@@ -369,7 +369,10 @@ html,body{
 
 .hide
 {
-    display: none;
+    display: none ;
+}
+.ui-tabs-hide{
+    display: none !important;
 }
 
 
