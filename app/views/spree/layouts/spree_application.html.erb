@@ -4,8 +4,11 @@
 <!--[if IE 8 ]>    <html class="ie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]>    <html class="ie ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!--><html lang="en"><!--<![endif]-->
+<% def analytics_tags %>
+  <% [] %>
+  <% end%>
 <head data-hook="inside_head">
-  <%= render :partial => 'spree/shared/head' %>
+    <%= render :partial => 'spree/shared/head' %>
 </head>
 <body class="<%= body_class %>" id="<%= @body_id || 'default' %>" data-hook="body">
 <div class="wrapper_hc">
